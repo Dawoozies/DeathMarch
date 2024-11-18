@@ -1,12 +1,10 @@
 using Unity.Collections;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Physics.Systems;
-using Unity.Transforms;
-using Unity.NetCode;
 using Unity.Burst;
-[UpdateInGroup(typeof(PhysicsSystemGroup))]
+using Unity.NetCode;
+[UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 [UpdateAfter(typeof(PhysicsSimulationGroup))]
 public partial struct GroundCheckSystem : ISystem
 {
@@ -44,11 +42,11 @@ public partial struct GroundCheckSystem : ISystem
             job.Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency).Complete();
             if(numCollisionEvents.Value > 0)
             {
-                groundCheck.ValueRW.isGrounded = true;
+                groundCheck.ValueRW.AirTime = 0;
             }
             else
             {
-                groundCheck.ValueRW.isGrounded = false;
+                groundCheck.ValueRW.AirTime += SystemAPI.Time.DeltaTime;
             }
             numCollisionEvents.Dispose();
         }

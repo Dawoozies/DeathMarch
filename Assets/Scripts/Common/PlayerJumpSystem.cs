@@ -1,27 +1,41 @@
-using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
-using Unity.Physics;
-using Unity.Transforms;
 using UnityEngine;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct PlayerJumpSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (jumpVelocity, jumpInput, jumpAirTime, jumpAirTimeMax, jumpState) in SystemAPI.Query<
-        RefRW<JumpVelocity>, 
-        PlayerJumpInput, 
-        JumpAirTime, 
-        JumpAirTimeMax,
-        RefRW<JumpState>
+        foreach (var (jumpVelocity, jumpInput, jumpState, jumpStrength, groundCheck) in SystemAPI.Query<
+        RefRW<JumpVelocity>,
+        PlayerJumpInput,
+        RefRW<JumpState>,
+        JumpStrength,
+        GroundCheck
         >().WithAll<Simulate>())
         {
-            if(jumpInput.Value && jumpState.ValueRO.Value == 0)
+            if(groundCheck.AirTime <= 0 && jumpInput.Value && jumpState.ValueRO.State == 0)
             {
                 Debug.Log($"Jump input happening {jumpInput.Value}");
-                jumpState.ValueRW.Value = 1;
+                jumpState.ValueRW.State = 1;
+                jumpState.ValueRW.AirTime = jumpState.ValueRO.AirTimeMax;
+            }
+            if(jumpState.ValueRO.State == 1)
+            {
+                //if(!jumpInput.Value && jumpState.ValueRO.AirTime > 0)
+                //{
+                //    jumpState.ValueRW.AirTime = 0;
+                //}
+                jumpVelocity.ValueRW.Value = math.up() * math.lerp(0, jumpStrength.Value, math.clamp(jumpState.ValueRO.AirTime,0,jumpState.ValueRO.AirTimeMax)/jumpState.ValueRO.AirTimeMax);
+                if(jumpState.ValueRO.AirTime > 0)
+                {
+                    jumpState.ValueRW.AirTime -= SystemAPI.Time.DeltaTime;
+                }
+                else
+                {
+                    jumpState.ValueRW.State = 0;
+                }
             }
             //if not falling and jump input false
             //0 == can jump
@@ -34,5 +48,6 @@ public partial struct PlayerJumpSystem : ISystem
 
             //if jumpAirTime >= jumpAirTimeMax regardless we have to move back to zero
         }
+
     }
 }
