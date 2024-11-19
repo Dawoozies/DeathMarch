@@ -48,13 +48,13 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "205af598d4894f40b138dea7b09ba2f3"
+                    "m_Id": "862f460186d54c8c98221c89dfd9222a"
                 },
-                "m_SlotId": 2
+                "m_SlotId": 1
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "5964de0f69274db0b207637c883b9229"
+                    "m_Id": "205af598d4894f40b138dea7b09ba2f3"
                 },
                 "m_SlotId": 0
             }
@@ -68,7 +68,7 @@
             },
             "m_InputSlot": {
                 "m_Node": {
-                    "m_Id": "205af598d4894f40b138dea7b09ba2f3"
+                    "m_Id": "5964de0f69274db0b207637c883b9229"
                 },
                 "m_SlotId": 0
             }
@@ -252,10 +252,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -626.0,
-            "y": 6.000003337860107,
+            "x": -717.0000610351563,
+            "y": 152.00003051757813,
             "width": 208.0,
-            "height": 360.9999694824219
+            "height": 361.0000305175781
         }
     },
     "m_Slots": [
@@ -516,9 +516,9 @@
     },
     "m_AllowMaterialOverride": false,
     "m_SurfaceType": 1,
-    "m_ZTestMode": 8,
+    "m_ZTestMode": 7,
     "m_ZWriteControl": 0,
-    "m_AlphaMode": 0,
+    "m_AlphaMode": 1,
     "m_RenderFace": 0,
     "m_AlphaClip": false,
     "m_CastShadows": false,
@@ -688,10 +688,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -1032.0,
-            "y": 149.0,
-            "width": 145.0,
-            "height": 112.0
+            "x": -1053.0,
+            "y": 100.00000762939453,
+            "width": 144.99993896484376,
+            "height": 112.00003814697266
         }
     },
     "m_Slots": [

@@ -15,9 +15,9 @@ public partial struct PlayerJumpSystem : ISystem
         GroundCheck
         >().WithAll<Simulate>())
         {
-            if(groundCheck.AirTime <= 0 && jumpInput.Value && jumpState.ValueRO.State == 0)
+            if(groundCheck.AirTime < jumpState.ValueRO.CoyoteTime && jumpInput.Value && jumpState.ValueRO.State == 0)
             {
-                Debug.Log($"Jump input happening {jumpInput.Value}");
+                //Debug.Log($"Jump input happening {jumpInput.Value}");
                 jumpState.ValueRW.State = 1;
                 jumpState.ValueRW.AirTime = jumpState.ValueRO.AirTimeMax;
             }

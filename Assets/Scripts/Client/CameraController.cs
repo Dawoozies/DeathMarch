@@ -46,10 +46,16 @@ namespace TMG.NFE_Tutorial
         public LayerMask mouseCastLayers;
         public float smoothTime;
         Vector3 pos_v;
+
+        private CinemachineOrbitalFollow _orbitalFollow;
+        public float horizontalOrbitValue;
+        public float horizontalOrbitSpeed;
+        //
         private void Awake()
         {
             _normalScreenPercentage = _screenPercentageDetection * 0.01f;
             _transposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+            _orbitalFollow = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineOrbitalFollow>();
             mainCamera = Camera.main;
         }
 
@@ -78,6 +84,14 @@ namespace TMG.NFE_Tutorial
                 MouseOffset();
                 FollowTargetPlayer();
             }
+            CameraOrbit();
+        }
+        private void CameraOrbit()
+        {
+            float dx = Input.mousePositionDelta.x;
+            horizontalOrbitValue += dx * Time.deltaTime * horizontalOrbitSpeed;
+
+            _orbitalFollow.HorizontalAxis.Value = horizontalOrbitValue;
         }
         private void MouseOffset()
         {

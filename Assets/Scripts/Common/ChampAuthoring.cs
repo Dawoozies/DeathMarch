@@ -7,10 +7,12 @@ public class ChampAuthoring : MonoBehaviour
     public float moveSpeed;
     public float jumpAirTimeMax;
     public float jumpStrength;
+    public float coyoteTime;
     public Vector3 gravityDirection;
     public float gravityStrength;
     public float gravityStrengthMax;
     public float gravityAirTimeMax;
+    Camera mainCamera => Camera.main;
     public class ChampBaker : Baker<ChampAuthoring>
     {
         public override void Bake(ChampAuthoring authoring)
@@ -24,6 +26,7 @@ public class ChampAuthoring : MonoBehaviour
 
             //Look to mouse components
             AddComponent<PlayerLookInput>(entity);
+            AddComponent<PlayerCameraDirections>(entity);
 
             //Planar Movement components
             AddComponent<PlayerMoveInput>(entity);
@@ -35,7 +38,8 @@ public class ChampAuthoring : MonoBehaviour
             AddComponent(entity, new JumpState {
                 State = 0,
                 AirTime = 0,
-                AirTimeMax = authoring.jumpAirTimeMax
+                AirTimeMax = authoring.jumpAirTimeMax,
+                CoyoteTime = authoring.coyoteTime
             });
             AddComponent(entity, new JumpVelocity {Value = float3.zero});
             AddComponent(entity, new JumpStrength {Value = authoring.jumpStrength});

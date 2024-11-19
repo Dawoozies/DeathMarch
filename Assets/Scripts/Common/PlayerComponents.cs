@@ -27,4 +27,11 @@ public struct JumpState : IComponentData
     public int State;
     [GhostField(Quantization = 0)] public float AirTime;
     public float AirTimeMax;
+    public float CoyoteTime;
+}
+[GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
+public struct PlayerCameraDirections : IInputComponentData
+{
+    [GhostField(Quantization = 0)] public float2 Forward;
+    [GhostField(Quantization = 0)] public float2 Right;
 }

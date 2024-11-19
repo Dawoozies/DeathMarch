@@ -27,9 +27,10 @@ public partial class PlayerMoveInputSystem : SystemBase
     {
         float2 moveInput = callbackContext.ReadValue<Vector2>();
         Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
+
         EntityManager.SetComponentData(playerEntity, new PlayerMoveInput
         {
-           Value = moveInput 
+           Value = moveInput
         });
     }
     protected override void OnUpdate()

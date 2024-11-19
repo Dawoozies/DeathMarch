@@ -8,15 +8,19 @@ public partial struct PlayerMoveSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (moveVelocity, moveInput, moveSpeed) in SystemAPI.Query<
+        foreach (var (moveVelocity, moveInput, moveSpeed, cameraDirections) in SystemAPI.Query<
         RefRW<MoveVelocity>,
         PlayerMoveInput, 
-        MoveSpeed
+        MoveSpeed,
+        PlayerCameraDirections
         >().WithAll<Simulate>())
         {
             float3 velocity = float3.zero;
-            velocity.x = moveInput.Value.x;
-            velocity.z = moveInput.Value.y;
+            //velocity.x = moveInput.Value.x;
+            //velocity.z = moveInput.Value.y;
+            velocity.x = moveInput.Value.x * cameraDirections.Right.x + moveInput.Value.y * cameraDirections.Forward.x;
+            velocity.z = moveInput.Value.x * cameraDirections.Right.y + moveInput.Value.y * cameraDirections.Forward.y;
+            // n = moveInput.x * camRight + moveInput.y * camForward
             //v.ValueRW.Linear = velocity * moveSpeed.Value;
             moveVelocity.ValueRW.Value = velocity * moveSpeed.Value;
         }

@@ -4,6 +4,7 @@ using Unity.Physics;
 using Unity.Physics.Systems;
 using Unity.Burst;
 using Unity.NetCode;
+using Unity.Entities.Graphics;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 [UpdateAfter(typeof(PhysicsSimulationGroup))]
 public partial struct GroundCheckSystem : ISystem

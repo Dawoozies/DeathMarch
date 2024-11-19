@@ -34,6 +34,11 @@ public partial class PlayerLookInputSystem : SystemBase
         Entity cameraEntity = SystemAPI.GetSingletonEntity<MainCameraTag>();
         Camera mainCamera = EntityManager.GetComponentObject<MainCamera>(cameraEntity).Value;
 
+        float2 cameraForward = new float2(mainCamera.transform.forward.x, mainCamera.transform.forward.z);
+        float2 cameraRight = new float2(mainCamera.transform.right.x, mainCamera.transform.right.z);
+        cameraForward = math.normalizesafe(cameraForward);
+        cameraRight = math.normalizesafe(cameraRight);
+
         Vector3 mousePosition = Input.mousePosition;
         mousePosition.z = 100f;
         Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
@@ -45,13 +50,18 @@ public partial class PlayerLookInputSystem : SystemBase
             Filter = _selectionFilter
         };
 
+        Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
         if(collisionWorld.CastRay(selectionInput, out var closestHit))
         {
-            Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
             EntityManager.SetComponentData(playerEntity, new PlayerLookInput
             {
-                Value = closestHit.Position
+                Value = closestHit.Position,
             });
         }
+        EntityManager.SetComponentData(playerEntity, new PlayerCameraDirections 
+        {
+            Forward = cameraForward,
+            Right = cameraRight
+        });
     }
 }
