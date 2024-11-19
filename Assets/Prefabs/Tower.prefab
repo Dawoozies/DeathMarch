@@ -324,4 +324,4 @@ MonoBehaviour:
   GhostGroup: 0
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
-  RollbackPredictionOnStructuralChanges: 1
+  RollbackPredictionOnStructuralChanges: 0

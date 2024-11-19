@@ -39,7 +39,7 @@ public partial struct GravitySystem : ISystem
             {
                 gravityVelocity.ValueRW.Value = v;
             }
-            UnityEngine.Debug.Log($"||gravityVelocity||={math.length(gravityVelocity.ValueRO.Value)}");
+            //UnityEngine.Debug.Log($"||gravityVelocity||={math.length(gravityVelocity.ValueRO.Value)}");
         }
 
     }

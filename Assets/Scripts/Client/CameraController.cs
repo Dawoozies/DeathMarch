@@ -74,6 +74,10 @@ namespace TMG.NFE_Tutorial
         private void Update()
         {
             SetCamera();
+
+            if(!_cameraSet)
+                return;
+                
             if(spectatorCamera)
             {
                 MoveCamera();
@@ -104,6 +108,7 @@ namespace TMG.NFE_Tutorial
         }
         void FollowTargetPlayer()
         {
+
             var localTransform = _entityManager.GetComponentData<LocalTransform>(localChamp);
             //Debug.Log($"localChamp.Position = {localTransform.Position}");
             transform.position = Vector3.SmoothDamp(transform.position, localTransform.Position, ref pos_v, smoothTime);
