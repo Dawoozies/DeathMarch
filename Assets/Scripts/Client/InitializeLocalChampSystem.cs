@@ -16,7 +16,6 @@ public partial struct InitializeLocalChampSystem : ISystem
         {
             ecb.AddComponent<OwnerChampTag>(entity);
         }
-
         ecb.Playback(state.EntityManager);
     }
 }

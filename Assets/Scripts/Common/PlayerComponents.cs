@@ -12,6 +12,7 @@ public struct PlayerMoveInput : IInputComponentData
 {
     [GhostField(Quantization = 0)] public float2 Value;
 }
+[GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct MoveSpeed : IComponentData
 {
     [GhostField(Quantization = 0)] public float Value;
@@ -22,9 +23,14 @@ public struct PlayerJumpInput : IInputComponentData
     [GhostField] public bool Value;
 }
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
+public struct PlayerAimInput : IInputComponentData
+{
+    [GhostField] public bool Value;
+}
+[GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct JumpState : IComponentData
 {
-    public int State;
+    [GhostField] public int State;
     [GhostField(Quantization = 0)] public float AirTime;
     public float AirTimeMax;
     public float CoyoteTime;

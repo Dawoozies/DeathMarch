@@ -12,7 +12,6 @@ public class ChampAuthoring : MonoBehaviour
     public float gravityStrength;
     public float gravityStrengthMax;
     public float gravityAirTimeMax;
-    Camera mainCamera => Camera.main;
     public class ChampBaker : Baker<ChampAuthoring>
     {
         public override void Bake(ChampAuthoring authoring)
@@ -22,7 +21,7 @@ public class ChampAuthoring : MonoBehaviour
             AddComponent<NewChampTag>(entity);
             AddComponent<MobaTeam>(entity);
             AddComponent<URPMaterialPropertyBaseColor>(entity);
-            AddComponent<AbilityInput>(entity);
+            //AddComponent<AbilityInput>(entity);
 
             //Look to mouse components
             AddComponent<PlayerLookInput>(entity);
@@ -57,6 +56,9 @@ public class ChampAuthoring : MonoBehaviour
                 AirTime = 0,
                 AirTimeMax = authoring.gravityAirTimeMax
             });
+
+            //Player Aim Input
+            AddComponent(entity, new PlayerAimInput{Value = false});
         }
     }
 }

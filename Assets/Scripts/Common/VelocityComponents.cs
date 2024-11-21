@@ -30,7 +30,6 @@ public struct GravityVelocity : IComponentData
     [GhostField(Quantization = 0)] public float3 Value;
 }
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
-
 public struct GroundCheck : IComponentData
 {
     [GhostField(Quantization = 0)] public float AirTime;

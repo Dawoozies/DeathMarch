@@ -26,10 +26,12 @@ public partial struct GroundCheckSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var groundCheck in SystemAPI.Query<
-        RefRW<GroundCheck>
-        >().WithAll<Simulate>())
+        foreach (var (groundCheck, owner) in SystemAPI.Query<
+        RefRW<GroundCheck>,
+        GhostOwner
+        >().WithAll<Simulate, GhostOwnerIsLocal>())
         {
+            UnityEngine.Debug.Log($"groundCheck owner id = {owner.NetworkId}");
             NativeReference<int> numCollisionEvents = new NativeReference<int>(0, Allocator.TempJob);
             var job = new GroundCollisionEvents
             {
