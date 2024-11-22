@@ -40,3 +40,8 @@ public struct PlayerCameraDirections : IInputComponentData
     [GhostField(Quantization = 0)] public float2 Forward;
     [GhostField(Quantization = 0)] public float2 Right;
 }
+[GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
+public struct PlayerShootInput : IInputComponentData
+{
+    [GhostField(Quantization = 0)] public float HeldTime;
+}

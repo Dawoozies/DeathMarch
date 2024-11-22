@@ -1147,6 +1147,7 @@ MonoBehaviour:
   gravityStrength: 80
   gravityStrengthMax: 100
   gravityAirTimeMax: 0.3
+  shootHeldTimeMax: 5
 --- !u!114 &4734957427254244261
 MonoBehaviour:
   m_ObjectHideFlags: 0

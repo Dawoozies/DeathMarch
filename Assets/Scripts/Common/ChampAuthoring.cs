@@ -4,6 +4,7 @@ using Unity.Rendering;
 using UnityEngine;
 public class ChampAuthoring : MonoBehaviour
 {
+    [Header("Player Data")]
     public float moveSpeed;
     public float jumpAirTimeMax;
     public float jumpStrength;
@@ -12,6 +13,9 @@ public class ChampAuthoring : MonoBehaviour
     public float gravityStrength;
     public float gravityStrengthMax;
     public float gravityAirTimeMax;
+
+    [Header("Equipped Weapon Data")]
+    public float shootHeldTimeMax;
     public class ChampBaker : Baker<ChampAuthoring>
     {
         public override void Bake(ChampAuthoring authoring)
@@ -59,6 +63,15 @@ public class ChampAuthoring : MonoBehaviour
 
             //Player Aim Input
             AddComponent(entity, new PlayerAimInput{Value = false});
+
+            //Player Shoot Input
+            AddComponent(entity, new PlayerShootInput{HeldTime = 0f});
+
+            //Equipped Weapon Data
+            AddComponent(entity, new EquippedWeaponData
+            {
+                ShootHeldTimeMax = authoring.shootHeldTimeMax
+            });
         }
     }
 }
