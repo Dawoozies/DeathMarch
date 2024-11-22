@@ -6,19 +6,6 @@ using Unity.NetCode;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct GroundCheckSystem : ISystem
 {
-    [BurstCompile]
-    public partial struct GroundCollisionEvents : ICollisionEventsJob
-    {
-        [ReadOnly] public ComponentLookup<GroundTag> GroundTagLookup;
-        public NativeReference<int> NumCollisionEvents;
-        public void Execute(CollisionEvent collisionEvent)
-        {
-            if(GroundTagLookup.HasComponent(collisionEvent.EntityB))
-            {
-                NumCollisionEvents.Value++;
-            }
-        }
-    }
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<SimulationSingleton>();
@@ -26,21 +13,19 @@ public partial struct GroundCheckSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        foreach (var (groundCheck, owner) in SystemAPI.Query<
-        RefRW<GroundCheck>,
-        GhostOwner
-        >().WithAll<Simulate, GhostOwnerIsLocal>())
+        foreach (var (groundCheck, entity) in SystemAPI.Query<
+        RefRW<GroundCheck>
+        >().WithAll<Simulate>().WithEntityAccess())
         {
-            UnityEngine.Debug.Log($"groundCheck owner id = {owner.NetworkId}");
             NativeReference<int> numCollisionEvents = new NativeReference<int>(0, Allocator.TempJob);
             var job = new GroundCollisionEvents
             {
                 GroundTagLookup = SystemAPI.GetComponentLookup<GroundTag>(true),
-                NumCollisionEvents = numCollisionEvents
+                NumCollisionEvents = numCollisionEvents,
+                CheckingEntity = entity
             };
-
             job.Schedule(SystemAPI.GetSingleton<SimulationSingleton>(), state.Dependency).Complete();
-            if(numCollisionEvents.Value > 0)
+            if (numCollisionEvents.Value > 0)
             {
                 groundCheck.ValueRW.AirTime = 0;
             }
@@ -48,7 +33,22 @@ public partial struct GroundCheckSystem : ISystem
             {
                 groundCheck.ValueRW.AirTime += SystemAPI.Time.DeltaTime;
             }
+
             numCollisionEvents.Dispose();
+        }
+    }
+}
+[BurstCompile]
+public partial struct GroundCollisionEvents : ICollisionEventsJob
+{
+    [ReadOnly] public ComponentLookup<GroundTag> GroundTagLookup;
+    public NativeReference<int> NumCollisionEvents;
+    [ReadOnly] public Entity CheckingEntity;
+    public void Execute(CollisionEvent collisionEvent)
+    {
+        if (collisionEvent.EntityA == CheckingEntity && GroundTagLookup.HasComponent(collisionEvent.EntityB))
+        {
+            NumCollisionEvents.Value++;
         }
     }
 }

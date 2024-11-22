@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigConfigSource: 0
-  avatar: {fileID: 0}
+  avatar: {fileID: 9000000, guid: c75bc23b6333953458b59f8d6fc09b2b, type: 3}
   applyRootMotion: 0
   animationCulling: 0
   boneEntityStrippingMode: 0
@@ -1122,7 +1122,6 @@ Transform:
   m_Children:
   - {fileID: 8305558416346659112}
   - {fileID: 4188643451755733834}
-  - {fileID: 8323373839931219848}
   - {fileID: 3390564006189158806}
   - {fileID: 4927659368269351367}
   - {fileID: 6633518609378621105}
@@ -1172,18 +1171,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c79d771cedb4794bf100ce60df5f764, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultGhostMode: 2
+  DefaultGhostMode: 1
   SupportedGhostModes: 3
   OptimizationMode: 0
   Importance: 1000
-  prefabId: 2fe49a526567fdc46a55b0b1094bd406
+  prefabId: 66aff49f61929b249b7d9b5b7f98b94b
   HasOwner: 1
   SupportAutoCommandTarget: 1
   TrackInterpolationDelay: 0
   GhostGroup: 0
   UsePreSerialization: 0
   RollbackPredictedSpawnedGhostState: 0
-  RollbackPredictionOnStructuralChanges: 1
+  RollbackPredictionOnStructuralChanges: 0
 --- !u!54 &3276137826810050798
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1354,37 +1353,6 @@ MonoBehaviour:
         Tag07: 0
     m_SerializedVersion: 1
   m_SerializedVersion: 1
---- !u!1 &1717459018353361192
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8323373839931219848}
-  m_Layer: 0
-  m_Name: Body
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8323373839931219848
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1717459018353361192}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2597878411462530463}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1752455881357361027
 GameObject:
   m_ObjectHideFlags: 0
@@ -2237,7 +2205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigConfigSource: 0
-  avatar: {fileID: 0}
+  avatar: {fileID: 9000000, guid: c75bc23b6333953458b59f8d6fc09b2b, type: 3}
   applyRootMotion: 0
   animationCulling: 0
   boneEntityStrippingMode: 0

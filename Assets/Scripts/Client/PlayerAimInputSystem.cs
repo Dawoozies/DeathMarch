@@ -8,6 +8,7 @@ public partial class PlayerAimInputSystem : SystemBase
     protected override void OnCreate()
     {
         _inputActions = new InputSystem_Actions();
+        RequireForUpdate<OwnerChampTag>();
     }
     protected override void OnStartRunning()
     {
@@ -22,10 +23,11 @@ public partial class PlayerAimInputSystem : SystemBase
     private void OnAimInput(InputAction.CallbackContext callbackContext)
     {
         float inputValue = callbackContext.ReadValue<float>();
-        foreach(var playerInput in SystemAPI.Query<RefRW<PlayerAimInput>>().WithAll<GhostOwnerIsLocal>())
+        Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
+        EntityManager.SetComponentData(playerEntity, new PlayerAimInput
         {
-            playerInput.ValueRW.Value = inputValue > 0 ? true : false;
-        }
+            Value = inputValue > 0 ? true : false
+        });
     }
     protected override void OnUpdate()
     {

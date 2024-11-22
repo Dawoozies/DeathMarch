@@ -14,7 +14,9 @@ public partial struct InitializeLocalChampSystem : ISystem
         EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
         foreach (var (transform, entity) in SystemAPI.Query<LocalTransform>().WithAll<GhostOwnerIsLocal>().WithNone<OwnerChampTag>().WithEntityAccess())
         {
+            //THIS ONLY PUTS OWNER CHAMP TAG ONTO THE CLIENT SIDE PLAYER
             ecb.AddComponent<OwnerChampTag>(entity);
+            //SO MAKING CHECKS AROUND THIS RESULT IN ONLY CLIENT SIDE STUFF
         }
         ecb.Playback(state.EntityManager);
     }
