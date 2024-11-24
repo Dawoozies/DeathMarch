@@ -25,15 +25,10 @@ public partial class BulletLineFXSystem : SystemBase
                 1 << 2 | //enemy
                 1 << 4 //structure
         };
-        RequireForUpdate<NetworkTime>();
     }
     protected override void OnUpdate()
     {
-        var networkTime = SystemAPI.GetSingleton<NetworkTime>();
-        if (!networkTime.IsFirstTimeFullyPredictingTick) return;
-
-        if (!EntityManager.WorldUnmanaged.IsCreated) return;
-
+        //if (!EntityManager.WorldUnmanaged.IsCreated) return;
 
         foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer) in SystemAPI.Query<
         PlayerAimInput,
@@ -95,19 +90,17 @@ public partial class BulletLineFXSystem : SystemBase
                             break;
                     }
                 }
-                // VFX PASS
-                int vfxCount = 0;
-                foreach(var visualEffectComponent in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>())
+
+                float3 shootDirection = shotVector;
+                if (allHits.Length > 0)
                 {
-                    vfxCount++;
+                    shootDirection = allHits[allHits.Length - 1].Position - firingPointWorldTransform.ValueRO.Position;
                 }
-                
-                UnityEngine.Debug.LogError($"Before VFX isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()} vfxCount:{vfxCount}");
-                UnityEngine.Debug.LogError($"Before Managed VFX isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()} vfxCount:{vfxCount}");
+
                 foreach (var vfx in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>().WithAll<BulletLineFX>())
                 {
-                    //UnityEngine.Debug.LogError($"VFX RUN isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()}");
-                    //UnityEngine.Debug.LogError($"MANAGED VFX RUN isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()}");
+                    UnityEngine.Debug.LogError($"VFX RUN isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()}");
+                    UnityEngine.Debug.LogError($"MANAGED VFX RUN isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()}");
                     vfx.Value.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
                     VFXEventAttribute shootDirectionAttribute = vfx.Value.CreateVFXEventAttribute();
                     float3 shootDirVector = shotVector;
@@ -121,5 +114,7 @@ public partial class BulletLineFXSystem : SystemBase
                 allHits.Dispose();
             }
         }
+
+
     }
 }

@@ -12,7 +12,6 @@ public class BulletLineFXAuthoring : MonoBehaviour
         }
     }
 }
-[GhostComponent(PrefabType = GhostPrefabType.AllPredicted, OwnerSendType = SendToOwnerType.All)]
 public struct BulletLineFX : IComponentData 
 {
     public Entity VisualEffectEntity;
