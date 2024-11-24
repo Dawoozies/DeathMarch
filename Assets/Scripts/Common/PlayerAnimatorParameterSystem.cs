@@ -9,6 +9,7 @@ using Unity.Mathematics;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial struct PlayerAnimatorParameterSystem : ISystem
 {
+    
     public void OnCreate(ref SystemState state)
     {
     }
@@ -31,8 +32,10 @@ public partial struct PlayerAnimatorParameterSystem : ISystem
             // 1 == ShootHeldTime (float)
             RefRO<PlayerShootInput> shootInput = SystemAPI.GetComponentRO<PlayerShootInput>(parent.ValueRO.Value);
             RefRO<EquippedWeaponData> equippedWeaponData = SystemAPI.GetComponentRO<EquippedWeaponData>(parent.ValueRO.Value);
+            DynamicBuffer<WeaponDataBufferElement> weaponDataBuffer = SystemAPI.GetBuffer<WeaponDataBufferElement>(parent.ValueRO.Value);
+            WeaponDataBufferElement weaponDataBufferElement = weaponDataBuffer[equippedWeaponData.ValueRO.EquippedWeaponIndex];
             var shootHeldTimeParameter = allParams[1];
-            shootHeldTimeParameter.FloatValue = math.clamp(shootInput.ValueRO.HeldTime/equippedWeaponData.ValueRO.ShootHeldTimeMax, 0f, 1f);
+            shootHeldTimeParameter.FloatValue = math.clamp(shootInput.ValueRO.HeldTime/weaponDataBufferElement.ShootHeldTimeMax, 0f, 1f);
             allParams.ElementAt(1) = shootHeldTimeParameter;
             
             ////Debug.Log($"Parent={parent.ValueRO.Value.Index}:{parent.ValueRO.Value.Version}Entity={entity.Index}:{entity.Version}aim={aimInput.ValueRO.Value}");

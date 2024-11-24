@@ -4,6 +4,7 @@ using UnityEngine;
 public class MobaPrefabsAuthoring : MonoBehaviour
 {
     public GameObject Champion;
+    public GameObject HealthDisplayPrefab;
     public class MobaPrefabsBaker : Baker<MobaPrefabsAuthoring>
     {
         public override void Bake(MobaPrefabsAuthoring authoring)
@@ -12,6 +13,10 @@ public class MobaPrefabsAuthoring : MonoBehaviour
             AddComponent(prefabContainerEntity, new MobaPrefabs
             {
                 Champion = GetEntity(authoring.Champion, TransformUsageFlags.Dynamic)
+            });
+            AddComponentObject(prefabContainerEntity, new UIPrefabs
+            {
+                HealthDisplay = authoring.HealthDisplayPrefab 
             });
         }
     }

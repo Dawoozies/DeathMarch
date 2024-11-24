@@ -573,12 +573,12 @@ MonoBehaviour:
   m_ShapeType: 3
   m_PrimitiveCenter:
     x: 0
-    y: 0
-    z: 0
+    y: 1
+    z: 0.5
   m_PrimitiveSize:
-    x: 0.8
-    y: 0.8
-    z: 2
+    x: 2
+    y: 2
+    z: 4
   m_PrimitiveOrientation:
     Value:
       x: 90
@@ -586,15 +586,15 @@ MonoBehaviour:
       z: 0
     RotationOrder: 4
   m_Capsule:
-    Height: 2
-    Radius: 0.4
+    Height: 4
+    Radius: 1
     Axis: 2
   m_Cylinder:
-    Height: 2
-    Radius: 0.4
+    Height: 4
+    Radius: 1
     Axis: 2
-  m_CylinderSideCount: 6
-  m_SphereRadius: 1
+  m_CylinderSideCount: 4
+  m_SphereRadius: 2
   m_MinimumSkinnedVertexWeight: 0.1
   m_ConvexHullGenerationParameters:
     m_SimplificationTolerance: 0.03
@@ -740,7 +740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7ff7d3cda36614e9a31dab69d8c5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHitPoints: 150
+  MaxHitPoints: 3
+  healthOffset: {x: 0, y: 2, z: 0}
 --- !u!114 &6975667198459208369
 MonoBehaviour:
   m_ObjectHideFlags: 0

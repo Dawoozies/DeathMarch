@@ -1,9 +1,9 @@
 using Unity.Entities;
 using UnityEngine;
-
 public class HitPointsAuthoring : MonoBehaviour
 {
     public int MaxHitPoints;
+    public Vector3 healthOffset;
     public class HitPointsBaker : Baker<HitPointsAuthoring>
     {
         public override void Bake(HitPointsAuthoring authoring)
@@ -13,6 +13,7 @@ public class HitPointsAuthoring : MonoBehaviour
             AddComponent(entity, new MaxHitPoints{Value = authoring.MaxHitPoints});
             AddBuffer<DamageBufferElement>(entity);
             AddBuffer<DamageThisTick>(entity);
+            AddComponent(entity, new HealthUIOffset {Value = authoring.healthOffset});
         }
     }
 }

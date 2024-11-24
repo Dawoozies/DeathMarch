@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Rendering;
@@ -15,7 +16,23 @@ public class ChampAuthoring : MonoBehaviour
     public float gravityAirTimeMax;
 
     [Header("Equipped Weapon Data")]
-    public float shootHeldTimeMax;
+    public int equippedWeaponIndex;
+    public WeaponData[] allWeaponData;
+    [System.Serializable]
+    public class WeaponData
+    {
+        public GameObject firingPoint;
+        public float shootHeldTimeMax;
+        [Tooltip("Min and max horizontal accuracy bounds")]
+        public Vector2 horizontalBounds;
+        [Tooltip("Min and max vertical accuracy bounds")]
+        public Vector2 verticalBounds;
+        public int ammo;
+        [Tooltip("Measured in rounds per second")]
+        public float rateOfFire;
+        public float range;
+        public int penetration;
+    }
     public class ChampBaker : Baker<ChampAuthoring>
     {
         public override void Bake(ChampAuthoring authoring)
@@ -65,12 +82,33 @@ public class ChampAuthoring : MonoBehaviour
             AddComponent(entity, new PlayerAimInput{Value = false});
 
             //Player Shoot Input
-            AddComponent(entity, new PlayerShootInput{HeldTime = 0f});
+            AddComponent(entity, new PlayerShootInput
+            {
+                HeldTime = 0f,
+                ShootTime = 0f
+            });
 
             //Equipped Weapon Data
+            DynamicBuffer<WeaponDataBufferElement> weaponDataBuffer = AddBuffer<WeaponDataBufferElement>(entity);
+            for(int i = 0; i < authoring.allWeaponData.Length; i++)
+            {
+                WeaponData weaponData = authoring.allWeaponData[i];
+                Entity weaponFiringPointEntity = GetEntity(weaponData.firingPoint, TransformUsageFlags.Dynamic);
+                WeaponDataBufferElement weaponDataBufferElement = new WeaponDataBufferElement 
+                {
+                    WeaponFiringPoint = weaponFiringPointEntity,
+                    ShootHeldTimeMax = weaponData.shootHeldTimeMax,
+                    HorizontalBounds = weaponData.horizontalBounds,
+                    VerticalBounds = weaponData.verticalBounds,
+                    Ammo = weaponData.ammo,
+                    RateOfFire = weaponData.rateOfFire,
+                    Range = weaponData.range
+                };
+                weaponDataBuffer.Add(weaponDataBufferElement);
+            }
             AddComponent(entity, new EquippedWeaponData
             {
-                ShootHeldTimeMax = authoring.shootHeldTimeMax
+                EquippedWeaponIndex = authoring.equippedWeaponIndex
             });
         }
     }

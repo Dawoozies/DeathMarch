@@ -15,7 +15,7 @@ MonoBehaviour:
   m_CategoryNames:
   - GroundPlane
   - Champions
-  - Minions
+  - Enemy
   - Abilities
   - Structures
   - Raycasts
