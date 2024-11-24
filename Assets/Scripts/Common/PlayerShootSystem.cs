@@ -34,6 +34,7 @@ public partial class BulletLineFXSystem : SystemBase
 
         if (!EntityManager.WorldUnmanaged.IsCreated) return;
 
+
         foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer) in SystemAPI.Query<
         PlayerAimInput,
         PlayerShootInput,
@@ -55,15 +56,10 @@ public partial class BulletLineFXSystem : SystemBase
                 WeaponDataBufferElement weaponDataBufferElement = weaponDataBuffer[equippedWeaponData.EquippedWeaponIndex];
                 Entity weaponFiringPoint = weaponDataBufferElement.WeaponFiringPoint;
                 RefRO<LocalToWorld> firingPointWorldTransform = SystemAPI.GetComponentRO<LocalToWorld>(weaponFiringPoint);
-                float shootHeldTimeFactor = shootInput.HeldTime / weaponDataBufferElement.ShootHeldTimeMax;
-                float xSwayBound = math.lerp(weaponDataBufferElement.HorizontalBounds.x, weaponDataBufferElement.HorizontalBounds.y, math.clamp(shootHeldTimeFactor, 0f, 1f));
-                float ySwayBound = math.lerp(weaponDataBufferElement.VerticalBounds.x, weaponDataBufferElement.VerticalBounds.y, math.clamp(shootHeldTimeFactor, 0f, 1f));
                 // Shot direction calculation
                 float3 shotDir = new float3(cameraDirections.Forward.x, 0f, cameraDirections.Forward.y);
-                float xSway = Random.Range(-xSwayBound, xSwayBound); //move in right direction
-                float ySway = Random.Range(-ySwayBound, ySwayBound); //i think this is just move in up direction?
-                shotDir += new float3(cameraDirections.Right.x, 0f, cameraDirections.Right.y) * xSway;
-                shotDir += math.up() * ySway;
+                shotDir += new float3(cameraDirections.Right.x, 0f, cameraDirections.Right.y) * shootInput.ShootSway.x;
+                shotDir += math.up() * shootInput.ShootSway.y;
 
                 float3 shotVector = shotDir * weaponDataBufferElement.Range;
 
@@ -100,8 +96,18 @@ public partial class BulletLineFXSystem : SystemBase
                     }
                 }
                 // VFX PASS
+                int vfxCount = 0;
+                foreach(var visualEffectComponent in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>())
+                {
+                    vfxCount++;
+                }
+                
+                UnityEngine.Debug.LogError($"Before VFX isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()} vfxCount:{vfxCount}");
+                UnityEngine.Debug.LogError($"Before Managed VFX isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()} vfxCount:{vfxCount}");
                 foreach (var vfx in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>().WithAll<BulletLineFX>())
                 {
+                    //UnityEngine.Debug.LogError($"VFX RUN isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()}");
+                    //UnityEngine.Debug.LogError($"MANAGED VFX RUN isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()}");
                     vfx.Value.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
                     VFXEventAttribute shootDirectionAttribute = vfx.Value.CreateVFXEventAttribute();
                     float3 shootDirVector = shotVector;

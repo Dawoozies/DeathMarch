@@ -46,4 +46,5 @@ public struct PlayerShootInput : IInputComponentData
     [GhostField(Quantization = 0)] public float HeldTime;
     [GhostField(Quantization = 0)] public float ShootTime;
     [GhostField] public InputEvent Shoot;
+    [GhostField(Quantization = 0)] public float2 ShootSway;
 }

@@ -1,6 +1,7 @@
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Transforms;
 public struct EquippedWeaponData : IComponentData
 {
     public int EquippedWeaponIndex;
