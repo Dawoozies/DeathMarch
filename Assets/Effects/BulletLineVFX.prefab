@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 6995341317404337091}
   - component: {fileID: 1675383252372314240}
   - component: {fileID: 5085227316490832359}
-  - component: {fileID: 3430387525196446828}
   m_Layer: 0
-  m_Name: VFX
+  m_Name: BulletLineVFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,15 +129,3 @@ VFXRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &3430387525196446828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2821031878679657266}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90f7e42e114a8e34b8ed8d9664faca1b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -5,38 +8,35 @@ using Unity.NetCode;
 using Unity.Physics;
 using Unity.Physics.Systems;
 using Unity.Transforms;
-using UnityEngine.VFX;
-using UnityEngine.VFX.Utility;
 using Random = UnityEngine.Random;
-using RaycastHit = Unity.Physics.RaycastHit;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
-public partial class BulletLineFXSystem : SystemBase
+public partial class PlayerShootSystem : SystemBase
 {
-    private readonly ExposedProperty ShootDirAttribute = "ShootDirection";
     private CollisionFilter BulletFilter;
     protected override void OnCreate()
     {
-        RequireForUpdate<BulletLineFX>();
         BulletFilter = new CollisionFilter
         {
             BelongsTo = 1 << 5, //raycasts
             CollidesWith =
-                1 << 0 | //ground plane
-                1 << 2 | //enemy
-                1 << 4 //structure
+                1 << 2  //enemy
         };
+        RequireForUpdate<NetworkTime>();
     }
     protected override void OnUpdate()
     {
+        var networkTime = SystemAPI.GetSingleton<NetworkTime>();
+        if (!networkTime.IsFirstTimeFullyPredictingTick) return;
         //if (!EntityManager.WorldUnmanaged.IsCreated) return;
 
-        foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer) in SystemAPI.Query<
+        foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer, weaponHitBuffer, entity) in SystemAPI.Query<
         PlayerAimInput,
         PlayerShootInput,
         PlayerCameraDirections,
         EquippedWeaponData,
-        DynamicBuffer<WeaponDataBufferElement>
-        >().WithAll<Simulate>())
+        DynamicBuffer<WeaponDataBufferElement>,
+        DynamicBuffer<WeaponHitResultBufferElement>
+        >().WithAll<Simulate>().WithEntityAccess())
         {
             //if(!EntityManager.WorldUnmanaged.IsServer()) continue;
 
@@ -67,14 +67,28 @@ public partial class BulletLineFXSystem : SystemBase
                     Filter = BulletFilter
                 };
                 NativeList<RaycastHit> allHits = new NativeList<RaycastHit>(Allocator.Temp);
-                //float3 closestHit = firingPointWorldTransform.ValueRO.Position + shotVector; // must be the furthest point to start
-                //float3 furthestHit = firingPointWorldTransform.ValueRO.Position; //must be the closest point to start
+
+                weaponHitBuffer.Clear();
                 if (collisionWorld.CastRay(bulletCast, ref allHits))
                 {
+                    allHits.Sort(new RaycastHitComparer
+                    {
+                        RaycastStart = firingPointWorldTransform.ValueRO.Position
+                    });
+                    //try sorting with fraction after this so we dont need to do distance calculations again
                     int penetrationsLeft = weaponDataBufferElement.Penetration;
                     foreach (var hit in allHits)
                     {
-                        UnityEngine.Debug.LogError($"Hit.Position={hit.Position}");
+                        //float d = math.distance(firingPointWorldTransform.ValueRO.Position, hit.Position);
+                        //if (EntityManager.WorldUnmanaged.IsServer())
+                        //{
+                        //    UnityEngine.Debug.Log($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
+                        //}
+                        //if (EntityManager.WorldUnmanaged.IsClient())
+                        //{
+                        //    UnityEngine.Debug.LogError($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
+                        //}
+                        //UnityEngine.Debug.LogError($"Hit.Position={hit.Position}");
                         //Only do these on the server!!!!
                         if (EntityManager.WorldUnmanaged.IsServer())
                         {
@@ -85,36 +99,58 @@ public partial class BulletLineFXSystem : SystemBase
                             }
                         }
 
+                        weaponHitBuffer.Add(new WeaponHitResultBufferElement
+                        {
+                            WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
+                            HitEntity = hit.Entity,
+                            HitPosition = hit.Position,
+                            HitNormal = hit.SurfaceNormal
+                        });
+
                         penetrationsLeft--;
                         if (penetrationsLeft <= 0)
                             break;
                     }
                 }
-
-                float3 shootDirection = shotVector;
-                if (allHits.Length > 0)
+                else
                 {
-                    shootDirection = allHits[allHits.Length - 1].Position - firingPointWorldTransform.ValueRO.Position;
-                }
-
-                foreach (var vfx in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>().WithAll<BulletLineFX>())
-                {
-                    UnityEngine.Debug.LogError($"VFX RUN isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()}");
-                    UnityEngine.Debug.LogError($"MANAGED VFX RUN isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()}");
-                    vfx.Value.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
-                    VFXEventAttribute shootDirectionAttribute = vfx.Value.CreateVFXEventAttribute();
-                    float3 shootDirVector = shotVector;
-                    if (allHits.Length > 0)
+                    weaponHitBuffer.Add(new WeaponHitResultBufferElement
                     {
-                        shootDirVector = allHits[allHits.Length - 1].Position - firingPointWorldTransform.ValueRO.Position;
-                    }
-                    shootDirectionAttribute.SetVector3(ShootDirAttribute, shootDirVector);
-                    vfx.Value.SendEvent("OnPlay", shootDirectionAttribute);
+                        WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
+                        HitPosition = firingPointWorldTransform.ValueRO.Position + shotVector,
+                    });
                 }
+
+                //float3 shootDirection = shotVector;
+                //if (allHits.Length > 0)
+                //{
+                //    shootDirection = allHits[allHits.Length - 1].Position - firingPointWorldTransform.ValueRO.Position;
+                //}
+                //foreach (var vfx in SystemAPI.Query<SystemAPI.ManagedAPI.UnityEngineComponent<VisualEffect>>().WithAll<BulletLineFX>())
+                //{
+                //    //UnityEngine.Debug.LogError($"VFX RUN isServer:{EntityManager.WorldUnmanaged.IsServer()} isClient:{EntityManager.WorldUnmanaged.IsClient()}");
+                //    //UnityEngine.Debug.LogError($"MANAGED VFX RUN isServer:{EntityManager.World.IsServer()} isClient:{EntityManager.World.IsClient()}");
+                //    vfx.Value.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
+                //    VFXEventAttribute shootDirectionAttribute = vfx.Value.CreateVFXEventAttribute();
+                //    float3 shootDirVector = shotVector;
+                //    if (allHits.Length > 0)
+                //    {
+                //        shootDirVector = allHits[allHits.Length - 1].Position - firingPointWorldTransform.ValueRO.Position;
+                //    }
+                //    shootDirectionAttribute.SetVector3(ShootDirAttribute, shootDirVector);
+                //    vfx.Value.SendEvent("OnPlay", shootDirectionAttribute);
+                //}
                 allHits.Dispose();
+
             }
         }
-
-
+    }
+}
+public struct RaycastHitComparer : IComparer<RaycastHit>
+{
+    public float3 RaycastStart;
+    public int Compare(RaycastHit a, RaycastHit b)
+    {
+       return a.Fraction.CompareTo(b.Fraction);
     }
 }

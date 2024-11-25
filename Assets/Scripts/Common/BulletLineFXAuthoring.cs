@@ -8,11 +8,8 @@ public class BulletLineFXAuthoring : MonoBehaviour
         public override void Bake(BulletLineFXAuthoring authoring)
         {
             var entity = GetEntity(TransformUsageFlags.Dynamic);
-            AddComponent(entity, new BulletLineFX{VisualEffectEntity = entity});
+            AddComponent<BulletLineFXTag>(entity);
         }
     }
 }
-public struct BulletLineFX : IComponentData 
-{
-    public Entity VisualEffectEntity;
-}
+public struct BulletLineFXTag : IComponentData {}

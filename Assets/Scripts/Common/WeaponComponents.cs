@@ -17,3 +17,14 @@ public struct WeaponDataBufferElement : IBufferElementData
     public float Range;
     public int Penetration;
 }
+public struct WeaponHitResultBufferElement : IBufferElementData
+{
+    public float3 WeaponFiringPoint;
+    public Entity HitEntity;
+    public float3 HitPosition;
+    public float3 HitNormal;
+}
+public struct WeaponHitResultTime : IComponentData
+{
+    public float ElapsedTime;
+}

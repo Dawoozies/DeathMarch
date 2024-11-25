@@ -1150,13 +1150,13 @@ MonoBehaviour:
   equippedWeaponIndex: 0
   allWeaponData:
   - firingPoint: {fileID: 6180843323854027495}
-    shootHeldTimeMax: 2
-    horizontalBounds: {x: 0.02, y: 0.22}
+    shootHeldTimeMax: 3
+    horizontalBounds: {x: 0.02, y: 0.1}
     verticalBounds: {x: 0, y: 0.1}
     ammo: 50
     rateOfFire: 14
-    range: 50
-    penetration: 0
+    range: 100
+    penetration: 20
 --- !u!114 &4734957427254244261
 MonoBehaviour:
   m_ObjectHideFlags: 0

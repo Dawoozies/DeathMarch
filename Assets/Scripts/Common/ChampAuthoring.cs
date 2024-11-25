@@ -102,7 +102,8 @@ public class ChampAuthoring : MonoBehaviour
                     VerticalBounds = weaponData.verticalBounds,
                     Ammo = weaponData.ammo,
                     RateOfFire = weaponData.rateOfFire,
-                    Range = weaponData.range
+                    Range = weaponData.range,
+                    Penetration = weaponData.penetration
                 };
                 weaponDataBuffer.Add(weaponDataBufferElement);
             }
@@ -110,6 +111,13 @@ public class ChampAuthoring : MonoBehaviour
             {
                 EquippedWeaponIndex = authoring.equippedWeaponIndex
             });
+
+            //Weapon Hit Result Related
+            AddComponent<WeaponHitResultTime>(entity);
+            AddBuffer<WeaponHitResultBufferElement>(entity);
+
+            //VFX Related
+            AddComponent<BulletLineFXTag>(entity);
         }
     }
 }

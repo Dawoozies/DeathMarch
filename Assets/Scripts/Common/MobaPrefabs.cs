@@ -9,3 +9,7 @@ public class UIPrefabs : IComponentData
 {
     public GameObject HealthDisplay;
 }
+public class VFXPrefabs : IComponentData
+{
+    public GameObject BulletLine;
+}

@@ -1,6 +1,4 @@
-using Unity.Burst;
 using Unity.Entities;
-using Unity.Mathematics;
 using Unity.Transforms;
 using TMPro;
 using UnityEngine;
