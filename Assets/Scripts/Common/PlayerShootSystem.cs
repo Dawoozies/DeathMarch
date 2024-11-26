@@ -1,14 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Physics;
-using Unity.Physics.Systems;
 using Unity.Transforms;
-using Random = UnityEngine.Random;
+using UnityEngine.VFX;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
 public partial class PlayerShootSystem : SystemBase
 {
@@ -19,6 +16,7 @@ public partial class PlayerShootSystem : SystemBase
         {
             BelongsTo = 1 << 5, //raycasts
             CollidesWith =
+                1 << 0 | //ground plane
                 1 << 2  //enemy
         };
         RequireForUpdate<NetworkTime>();
@@ -26,28 +24,23 @@ public partial class PlayerShootSystem : SystemBase
     protected override void OnUpdate()
     {
         var networkTime = SystemAPI.GetSingleton<NetworkTime>();
-        if (!networkTime.IsFirstTimeFullyPredictingTick) return;
+        //if (!networkTime.IsFirstTimeFullyPredictingTick) return;
         //if (!EntityManager.WorldUnmanaged.IsCreated) return;
 
-        foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer, weaponHitBuffer, entity) in SystemAPI.Query<
+        foreach (var (aimInput, shootInput, cameraDirections, equippedWeaponData, weaponDataBuffer, weaponHitBuffer) in SystemAPI.Query<
         PlayerAimInput,
         PlayerShootInput,
         PlayerCameraDirections,
         EquippedWeaponData,
         DynamicBuffer<WeaponDataBufferElement>,
         DynamicBuffer<WeaponHitResultBufferElement>
-        >().WithAll<Simulate>().WithEntityAccess())
+        >().WithAll<Simulate>())
         {
             //if(!EntityManager.WorldUnmanaged.IsServer()) continue;
+            //get the firing point LocalToWorld
 
             if (aimInput.Value && shootInput.Shoot.IsSet)
             {
-                //We are getting input client and server side. But it's important we only write/change
-                //things server side. Any change of data must only be done on the server.
-                //BUT any effects must be done client + server side!
-                //The only thing we must limit to the server is the reduction of hitpoints on hit entities
-
-                //get the firing point LocalToWorld
                 WeaponDataBufferElement weaponDataBufferElement = weaponDataBuffer[equippedWeaponData.EquippedWeaponIndex];
                 Entity weaponFiringPoint = weaponDataBufferElement.WeaponFiringPoint;
                 RefRO<LocalToWorld> firingPointWorldTransform = SystemAPI.GetComponentRO<LocalToWorld>(weaponFiringPoint);
@@ -55,72 +48,89 @@ public partial class PlayerShootSystem : SystemBase
                 float3 shotDir = new float3(cameraDirections.Forward.x, 0f, cameraDirections.Forward.y);
                 shotDir += new float3(cameraDirections.Right.x, 0f, cameraDirections.Right.y) * shootInput.ShootSway.x;
                 shotDir += math.up() * shootInput.ShootSway.y;
-
                 float3 shotVector = shotDir * weaponDataBufferElement.Range;
+                //We are getting input client and server side. But it's important we only write/change
+                //things server side. Any change of data must only be done on the server.
+                //BUT any effects must be done client + server side!
+                //The only thing we must limit to the server is the reduction of hitpoints on hit entities
 
-                //RAYCAST PASS
-                CollisionWorld collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
-                RaycastInput bulletCast = new RaycastInput
+                if (networkTime.IsFirstTimeFullyPredictingTick)
                 {
-                    Start = firingPointWorldTransform.ValueRO.Position,
-                    End = firingPointWorldTransform.ValueRO.Position + shotVector,
-                    Filter = BulletFilter
-                };
-                NativeList<RaycastHit> allHits = new NativeList<RaycastHit>(Allocator.Temp);
+                    //RAYCAST PASS
+                    CollisionWorld collisionWorld = SystemAPI.GetSingleton<PhysicsWorldSingleton>().CollisionWorld;
+                    RaycastInput bulletCast = new RaycastInput
+                    {
+                        Start = firingPointWorldTransform.ValueRO.Position,
+                        End = firingPointWorldTransform.ValueRO.Position + shotVector,
+                        Filter = BulletFilter
+                    };
+                    NativeList<RaycastHit> allHits = new NativeList<RaycastHit>(Allocator.Temp);
 
-                weaponHitBuffer.Clear();
-                if (collisionWorld.CastRay(bulletCast, ref allHits))
-                {
-                    allHits.Sort(new RaycastHitComparer
+                    weaponHitBuffer.Clear();
+                    if (collisionWorld.CastRay(bulletCast, ref allHits))
                     {
-                        RaycastStart = firingPointWorldTransform.ValueRO.Position
-                    });
-                    //try sorting with fraction after this so we dont need to do distance calculations again
-                    int penetrationsLeft = weaponDataBufferElement.Penetration;
-                    foreach (var hit in allHits)
-                    {
-                        //float d = math.distance(firingPointWorldTransform.ValueRO.Position, hit.Position);
-                        //if (EntityManager.WorldUnmanaged.IsServer())
-                        //{
-                        //    UnityEngine.Debug.Log($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
-                        //}
-                        //if (EntityManager.WorldUnmanaged.IsClient())
-                        //{
-                        //    UnityEngine.Debug.LogError($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
-                        //}
-                        //UnityEngine.Debug.LogError($"Hit.Position={hit.Position}");
-                        //Only do these on the server!!!!
-                        if (EntityManager.WorldUnmanaged.IsServer())
+                        allHits.Sort(new RaycastHitComparer
                         {
-                            if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))
+                            RaycastStart = firingPointWorldTransform.ValueRO.Position
+                        });
+                        //try sorting with fraction after this so we dont need to do distance calculations again
+                        int penetrationsLeft = weaponDataBufferElement.Penetration;
+                        foreach (var hit in allHits)
+                        {
+                            //float d = math.distance(firingPointWorldTransform.ValueRO.Position, hit.Position);
+                            //if (EntityManager.WorldUnmanaged.IsServer())
+                            //{
+                            //    UnityEngine.Debug.Log($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
+                            //}
+                            //if (EntityManager.WorldUnmanaged.IsClient())
+                            //{
+                            //    UnityEngine.Debug.LogError($"d={d}m Hit.Position={hit.Position} Hit.Entity={hit.Entity.Index}:{hit.Entity.Version} IsServer={EntityManager.WorldUnmanaged.IsServer()}");
+                            //}
+                            //UnityEngine.Debug.LogError($"Hit.Position={hit.Position}");
+                            //Only do these on the server!!!!
+                            if (EntityManager.WorldUnmanaged.IsServer())
                             {
-                                var hp = SystemAPI.GetComponentRW<CurrentHitPoints>(hit.Entity);
-                                hp.ValueRW.Value--;
+                                if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))
+                                {
+                                    var hp = SystemAPI.GetComponentRW<CurrentHitPoints>(hit.Entity);
+                                    hp.ValueRW.Value--;
+                                }
                             }
-                        }
 
+                            weaponHitBuffer.Add(new WeaponHitResultBufferElement
+                            {
+                                WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
+                                HitEntity = hit.Entity,
+                                HitPosition = hit.Position,
+                                HitNormal = hit.SurfaceNormal
+                            });
+
+                            penetrationsLeft--;
+                            if (penetrationsLeft <= 0)
+                                break;
+                        }
+                    }
+                    else
+                    {
                         weaponHitBuffer.Add(new WeaponHitResultBufferElement
                         {
                             WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
-                            HitEntity = hit.Entity,
-                            HitPosition = hit.Position,
-                            HitNormal = hit.SurfaceNormal
+                            HitPosition = firingPointWorldTransform.ValueRO.Position + shotVector,
                         });
-
-                        penetrationsLeft--;
-                        if (penetrationsLeft <= 0)
-                            break;
                     }
-                }
-                else
-                {
-                    weaponHitBuffer.Add(new WeaponHitResultBufferElement
-                    {
-                        WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
-                        HitPosition = firingPointWorldTransform.ValueRO.Position + shotVector,
-                    });
+                    allHits.Dispose();
+
+
                 }
 
+                if(networkTime.IsFirstPredictionTick)
+                {
+                    VisualEffect vfx = EffectsManager.ins.GetEffect(0);
+                    VFXEventAttribute shootDirectionAttribute = vfx.CreateVFXEventAttribute();
+                    shootDirectionAttribute.SetVector3("ShootDirection", shotVector);
+                    shootDirectionAttribute.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
+                    vfx.SendEvent("OnPlay", shootDirectionAttribute);
+                }
                 //float3 shootDirection = shotVector;
                 //if (allHits.Length > 0)
                 //{
@@ -140,8 +150,20 @@ public partial class PlayerShootSystem : SystemBase
                 //    shootDirectionAttribute.SetVector3(ShootDirAttribute, shootDirVector);
                 //    vfx.Value.SendEvent("OnPlay", shootDirectionAttribute);
                 //}
-                allHits.Dispose();
+            }
+            //lets see if we can get it to work here :)
 
+        }
+
+        foreach (var (aimInput, shootInput, vfxEventAspect) in SystemAPI.Query<
+        PlayerAimInput,
+        PlayerShootInput,
+        VFXEventAspect
+        >().WithAll<Simulate>())
+        {
+            if (aimInput.Value && shootInput.Shoot.IsSet)
+            {
+                vfxEventAspect.EventsFired = false;
             }
         }
     }
@@ -151,6 +173,6 @@ public struct RaycastHitComparer : IComparer<RaycastHit>
     public float3 RaycastStart;
     public int Compare(RaycastHit a, RaycastHit b)
     {
-       return a.Fraction.CompareTo(b.Fraction);
+        return a.Fraction.CompareTo(b.Fraction);
     }
 }

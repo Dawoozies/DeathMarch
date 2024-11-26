@@ -74,6 +74,6 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _FogColor: {r: 0.07527331, g: 0, b: 0.5471698, a: 1}
-    - _RevealCenter: {r: -19.091011, g: -10.999993, b: -12.382997, a: 0}
+    - _RevealCenter: {r: -8.502001, g: -1.029775, b: 1.3110001, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

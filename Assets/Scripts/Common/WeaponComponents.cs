@@ -2,6 +2,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using Unity.NetCode;
 public struct EquippedWeaponData : IComponentData
 {
     public int EquippedWeaponIndex;
@@ -24,7 +25,7 @@ public struct WeaponHitResultBufferElement : IBufferElementData
     public float3 HitPosition;
     public float3 HitNormal;
 }
-public struct WeaponHitResultTime : IComponentData
+public struct WeaponEventBufferElement : IBufferElementData
 {
-    public float ElapsedTime;
+    public bool hasFired;
 }

@@ -1090,7 +1090,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 127.0.0.1
+  m_Text: 192.168.1.114
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -2106,7 +2106,7 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 7979
+  m_Text: 7777
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -2682,7 +2682,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "7979\u200B"
+  m_text: "7777\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3296,6 +3296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1213336268}
   - component: {fileID: 1213336271}
+  - component: {fileID: 1213336272}
   m_Layer: 0
   m_Name: ConnectionManager
   m_TagString: Untagged
@@ -3335,6 +3336,27 @@ MonoBehaviour:
   _connectionModeDropdown: {fileID: 746543760}
   _teamDropdown: {fileID: 11163431}
   _connectButton: {fileID: 661734915}
+--- !u!114 &1213336272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1213336266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c144947d70327174186ca87f7d8d0277, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentRect: {fileID: 1828073364}
+  AddressInput: {fileID: 393054154}
+  PortInput: {fileID: 723240685}
+  presetPrefab: {fileID: 5642316475568024636, guid: 022edb08fac91504385e83444e8ac0c2, type: 3}
+  presets:
+  - address: 193.82.245.228
+    port: 7777
+  - address: 192.168.1.114
+    port: 7777
 --- !u!1 &1289057185
 GameObject:
   m_ObjectHideFlags: 0
@@ -3910,7 +3932,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "127.0.0.1\u200B"
+  m_text: "192.168.1.114\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -113,11 +113,13 @@ public class ChampAuthoring : MonoBehaviour
             });
 
             //Weapon Hit Result Related
-            AddComponent<WeaponHitResultTime>(entity);
             AddBuffer<WeaponHitResultBufferElement>(entity);
 
             //VFX Related
-            AddComponent<BulletLineFXTag>(entity);
+            //AddComponent<BulletLineFXTag>(entity);
+
+            //Weapon event related
+            AddBuffer<WeaponEventBufferElement>(entity);
         }
     }
 }
