@@ -13,7 +13,7 @@ public class HitPointsAuthoring : MonoBehaviour
             AddComponent(entity, new MaxHitPoints{Value = authoring.MaxHitPoints});
             AddBuffer<DamageBufferElement>(entity);
             AddBuffer<DamageThisTick>(entity);
-            AddComponent(entity, new HealthUIOffset {Value = authoring.healthOffset});
+            //AddComponent(entity, new HealthUIOffset {Value = authoring.healthOffset});
         }
     }
 }

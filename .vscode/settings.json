@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "DeathMarch.sln"
+    "dotnet.defaultSolution": "DeathMarch.sln",
+    "dotnet.preferCSharpExtension": true
 }
