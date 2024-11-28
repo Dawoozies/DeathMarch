@@ -53,7 +53,6 @@ public partial class PlayerShootSystem : SystemBase
                 //things server side. Any change of data must only be done on the server.
                 //BUT any effects must be done client + server side!
                 //The only thing we must limit to the server is the reduction of hitpoints on hit entities
-
                 if (networkTime.IsFirstTimeFullyPredictingTick)
                 {
                     //RAYCAST PASS
@@ -65,7 +64,6 @@ public partial class PlayerShootSystem : SystemBase
                         Filter = BulletFilter
                     };
                     NativeList<RaycastHit> allHits = new NativeList<RaycastHit>(Allocator.Temp);
-
                     weaponHitBuffer.Clear();
                     if (collisionWorld.CastRay(bulletCast, ref allHits))
                     {
@@ -118,6 +116,7 @@ public partial class PlayerShootSystem : SystemBase
                             HitPosition = firingPointWorldTransform.ValueRO.Position + shotVector,
                         });
                     }
+
                     allHits.Dispose();
 
 
@@ -127,7 +126,14 @@ public partial class PlayerShootSystem : SystemBase
                 {
                     VisualEffect vfx = EffectsManager.ins.GetEffect(0);
                     VFXEventAttribute shootDirectionAttribute = vfx.CreateVFXEventAttribute();
-                    shootDirectionAttribute.SetVector3("ShootDirection", shotVector);
+                    if(weaponHitBuffer.Length > 0)
+                    {
+                        shootDirectionAttribute.SetVector3("ShootDirection", weaponHitBuffer[weaponHitBuffer.Length - 1].HitPosition - weaponHitBuffer[weaponHitBuffer.Length - 1].WeaponFiringPoint);
+                    }
+                    else
+                    {
+                        shootDirectionAttribute.SetVector3("ShootDirection", shotVector);
+                    }
                     shootDirectionAttribute.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
                     vfx.SendEvent("OnPlay", shootDirectionAttribute);
                 }

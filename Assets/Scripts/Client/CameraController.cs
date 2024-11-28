@@ -4,6 +4,7 @@ using Unity.Transforms;
 using UnityEngine;
 using Unity.Mathematics;
 using System;
+using UnityEngine.InputSystem;
 namespace TMG.NFE_Tutorial
 {
     public class CameraController : MonoBehaviour
@@ -50,15 +51,27 @@ namespace TMG.NFE_Tutorial
         private CinemachineOrbitalFollow _orbitalFollow;
         public float horizontalOrbitValue;
         public float horizontalOrbitSpeed;
+        InputSystem_Actions inputActions;
+        Vector2 mousePositionDelta;
         //
         private void Awake()
         {
+            inputActions = new InputSystem_Actions();
             _normalScreenPercentage = _screenPercentageDetection * 0.01f;
             _transposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
             _orbitalFollow = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineOrbitalFollow>();
             mainCamera = Camera.main;
         }
-
+        void OnEnable()
+        {
+            inputActions.Enable();
+            inputActions.Player.MousePosition.performed += InputMouseDelta;
+        }
+        void OnDisable()
+        {
+            inputActions.Player.MousePosition.performed -= InputMouseDelta;
+            inputActions.Disable();
+        }
         private void Start()
         {
             if (World.DefaultGameObjectInjectionWorld == null) return;
@@ -70,7 +83,10 @@ namespace TMG.NFE_Tutorial
         {
             _normalScreenPercentage = _screenPercentageDetection * 0.01f;
         }
-
+        private void InputMouseDelta(InputAction.CallbackContext context)
+        {
+            mousePositionDelta = context.ReadValue<Vector2>();
+        }
         private void Update()
         {
             SetCamera();
@@ -92,9 +108,8 @@ namespace TMG.NFE_Tutorial
         }
         private void CameraOrbit()
         {
-            float dx = Input.mousePositionDelta.x;
+            float dx = mousePositionDelta.x;
             horizontalOrbitValue += dx * Time.deltaTime * horizontalOrbitSpeed;
-
             _orbitalFollow.HorizontalAxis.Value = horizontalOrbitValue;
         }
         private void MouseOffset()

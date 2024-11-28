@@ -5,6 +5,8 @@ using Unity.Transforms;
 using Unity.Collections;
 using Unity.Physics;
 using UnityEngine;
+using Pathfinding.ECS;
+
 [BurstCompile]
 public partial struct HordeSystem : ISystem
 {
@@ -23,28 +25,15 @@ public partial struct HordeSystem : ISystem
         if (playerTransforms.Length <= 0)
             return;
         int entityCount = 0;
-        foreach (var (transform, physicsVelocity, hordeMove, groundCheck) in SystemAPI.Query<
-        RefRW<LocalTransform>,
-        RefRW<PhysicsVelocity>,
+        foreach (var (transform, hordeMove, destinationPoint) in SystemAPI.Query<
+        LocalTransform,
         HordeMove,
-        GroundCheck
+        RefRW<DestinationPoint>
         >().WithAll<Simulate>())
         {
             entityCount++;
-            float3 targetPos = GetClosestPlayer(playerTransforms, transform.ValueRO.Position).Position;
-            float3 v = math.normalizesafe(targetPos - transform.ValueRO.Position)*hordeMove.MoveSpeed;
-            if(groundCheck.AirTime <= 0.1f)
-            {
-                v.y = 1f;
-            }
-            else
-            {
-                v.y -= hordeMove.Gravity;
-            }
-            physicsVelocity.ValueRW.Linear = v;
-            float3 fwd = v;
-            fwd.y = 0f;
-            transform.ValueRW.Rotation = quaternion.LookRotationSafe(fwd, math.up());
+            LocalTransform target = GetClosestPlayer(playerTransforms, transform.Position);
+            destinationPoint.ValueRW.destination = target.Position;
         }
         //put code for path finding in here
         Debug.Log($"HordeCount={entityCount}");
