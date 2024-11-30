@@ -20,6 +20,7 @@ namespace Pathfinding.ECS {
 
 		void ResolveGravity (RaycastHit hit, bool grounded, ref LocalTransform transform, in AgentMovementPlane movementPlane, ref GravityState gravityState) {
 			var localPosition = movementPlane.value.ToPlane(transform.Position, out var currentElevation);
+
 			if (grounded) {
 				// Grounded
 				// Make the vertical velocity fall off exponentially. This is reasonable from a physical standpoint as characters

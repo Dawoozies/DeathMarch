@@ -5,11 +5,13 @@ using Unity.Transforms;
 using Unity.NetCode;
 using UnityEngine;
 using Unity.Physics;
+using UnityEngine.InputSystem;
 [UpdateInGroup(typeof(GhostInputSystemGroup))]
 public partial class PlayerLookInputSystem : SystemBase
 {
     private InputSystem_Actions _inputActions;
     private CollisionFilter _selectionFilter;
+    private float2 mousePositionDelta;
     protected override void OnCreate()
     {
         _inputActions = new InputSystem_Actions();
@@ -23,10 +25,16 @@ public partial class PlayerLookInputSystem : SystemBase
     protected override void OnStartRunning()
     {
         _inputActions.Enable();
+        _inputActions.Player.MousePosition.performed += InputMouseDelta;
     }
     protected override void OnStopRunning()
     {
+        _inputActions.Player.MousePosition.performed -= InputMouseDelta;
         _inputActions.Disable();
+    }
+    void InputMouseDelta(InputAction.CallbackContext context)
+    {
+        mousePositionDelta = context.ReadValue<Vector2>()/100f;
     }
     protected override void OnUpdate()
     {
@@ -55,7 +63,7 @@ public partial class PlayerLookInputSystem : SystemBase
         {
             EntityManager.SetComponentData(playerEntity, new PlayerLookInput
             {
-                Value = closestHit.Position,
+                Value = closestHit.Position
             });
         }
         EntityManager.SetComponentData(playerEntity, new PlayerCameraDirections 

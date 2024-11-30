@@ -9,6 +9,7 @@ using Unity.Collections.LowLevel.Unsafe;
 using Pathfinding.Drawing;
 using Pathfinding.PID;
 using Unity.Burst.Intrinsics;
+using UnityEngine;
 
 namespace Pathfinding.ECS {
 	[BurstCompile]
@@ -44,7 +45,10 @@ namespace Pathfinding.ECS {
 
 		public void Execute (ref LocalTransform transform, ref MovementState state, in DestinationPoint destination, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, in MovementSettings settings, in ResolvedMovement resolvedMovement, ref MovementControl controlOutput) {
 			// Clamp the agent to the navmesh.
-			var position = ClampToNavmesh(transform.Position, state.closestOnNavmesh, in shape, in movementPlane);
+			//Debug.LogWarning($"BEFORE CLAMP transform.pos={transform.Position} state.closestOnNavmesh={state.closestOnNavmesh}");
+			//var position = ClampToNavmesh(transform.Position, state.closestOnNavmesh, in shape, in movementPlane);
+			var position = state.closestOnNavmesh;
+			//Debug.LogWarning($"AFTER CLAMP transform.pos={position}");
 
 			edgesScratch.Clear();
 			var scale = math.abs(transform.Scale);

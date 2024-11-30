@@ -8,20 +8,6 @@ public class HordeAuthoring : MonoBehaviour
     public float moveSpeed;
     public float climbSpeed;
     public float gravity;
-    public MovementSettings movementSettings;
-    public MovementControl movementControl;
-    public AgentCylinderShape cylinderShape;
-    public Pathfinding.ECS.AutoRepathPolicy autoRepathPolicy;
-    [SerializeField]
-    ManagedState managedState = new ManagedState
-    {
-        enableLocalAvoidance = false,
-        pathfindingSettings = PathRequestSettings.Default,
-    };
-    public OrientationMode orientationMode;
-    public MovementPlaneSource movementPlaneSource;
-    public bool syncPosition;
-    public bool syncRotation;
     public class ComponentBaker : Baker<HordeAuthoring>
     {
         public override void Bake(HordeAuthoring authoring)

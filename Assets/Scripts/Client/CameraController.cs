@@ -53,7 +53,9 @@ namespace TMG.NFE_Tutorial
         public float horizontalOrbitSpeed;
         InputSystem_Actions inputActions;
         Vector2 mousePositionDelta;
-        //
+        Vector2 angles;
+        public Vector2 yRotLimit;
+        public Vector3 posOffset;
         private void Awake()
         {
             inputActions = new InputSystem_Actions();
@@ -86,6 +88,11 @@ namespace TMG.NFE_Tutorial
         private void InputMouseDelta(InputAction.CallbackContext context)
         {
             mousePositionDelta = context.ReadValue<Vector2>();
+            angles += mousePositionDelta;
+            angles.y = Mathf.Clamp(angles.y, yRotLimit.x, yRotLimit.y);
+            Quaternion xRot = Quaternion.AngleAxis(angles.x, Vector3.up);
+            Quaternion yRot = Quaternion.AngleAxis(angles.y, Vector3.left);
+            transform.localRotation = xRot * yRot;
         }
         private void Update()
         {
@@ -104,7 +111,8 @@ namespace TMG.NFE_Tutorial
                 MouseOffset();
                 FollowTargetPlayer();
             }
-            CameraOrbit();
+            //CameraOrbit();
+            
         }
         private void CameraOrbit()
         {
@@ -123,10 +131,9 @@ namespace TMG.NFE_Tutorial
         }
         void FollowTargetPlayer()
         {
-
             var localTransform = _entityManager.GetComponentData<LocalTransform>(localChamp);
             //Debug.Log($"localChamp.Position = {localTransform.Position}");
-            transform.position = Vector3.SmoothDamp(transform.position, localTransform.Position, ref pos_v, smoothTime);
+            transform.position = Vector3.SmoothDamp(transform.position, localTransform.Position + (float3)posOffset, ref pos_v, smoothTime);
         }
 
         private void MoveCamera()
