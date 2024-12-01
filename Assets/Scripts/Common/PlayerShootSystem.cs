@@ -121,7 +121,7 @@ public partial class PlayerShootSystem : SystemBase
 
 
                 }
-
+                //remember that its only the other clients that cant see the host
                 if(networkTime.IsFirstPredictionTick)
                 {
                     VisualEffect vfx = EffectsManager.ins.GetEffect(0);
