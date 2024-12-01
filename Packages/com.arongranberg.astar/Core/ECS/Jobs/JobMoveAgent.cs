@@ -87,7 +87,7 @@ namespace Pathfinding.ECS {
 		public static void MoveAgent (ref LocalTransform transform, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics, float dt) {
 			var delta = MoveWithoutGravity(ref transform, in resolvedMovement, in movementPlane, dt);
 			UnityEngine.Assertions.Assert.IsTrue(math.all(math.isfinite(delta)), "Refusing to set the agent's position to a non-finite vector");
-			UnityEngine.Debug.LogError($"delta={delta} transform.position={transform.Position}");
+			//UnityEngine.Debug.LogError($"delta={delta} transform.position={transform.Position}");
 			transform.Position += delta;
 			// In 2D games, the agent may move slightly in the Z direction, due to floating point errors.
 			// Some users get confused about this, so if the Z coordinate is very close to zero, just set it to zero.

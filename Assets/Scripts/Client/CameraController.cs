@@ -9,59 +9,24 @@ namespace TMG.NFE_Tutorial
 {
     public class CameraController : MonoBehaviour
     {
-        [SerializeField] private CinemachineVirtualCamera _cinemachineVirtualCamera;
-        
-        [Header("Move Settings")]
-        [SerializeField] private bool _drawBounds;
-        [SerializeField] private Bounds _cameraBounds;
-        [SerializeField] private float _camSpeed;
-        [SerializeField] private Vector2 _screenPercentageDetection;
-
-        [Header("Zoom Settings")]
-        [SerializeField] private float _minZoomDistance;
-        [SerializeField] private float _maxZoomDistance;
-        [SerializeField] private float _zoomSpeed;
-
-        [Header("Camera Start Positions")] 
-        [SerializeField] private Vector3 _redTeamPosition = new(-6f, 0.5f, 0f);
-        [SerializeField] private Vector3 _blueTeamPosition = new(-6f, 0.5f, 0f);
-        [SerializeField] private Vector3 _spectatorPosition = new(0f, 0f, 0f);
-        
-        private Vector2 _normalScreenPercentage;
-        private Vector2 NormalMousePos => new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
-        private bool InScreenLeft => NormalMousePos.x < _normalScreenPercentage.x  && Application.isFocused;
-        private bool InScreenRight => NormalMousePos.x > 1 - _normalScreenPercentage.x  && Application.isFocused;
-        private bool InScreenTop => NormalMousePos.y < _normalScreenPercentage.y  && Application.isFocused;
-        private bool InScreenBottom => NormalMousePos.y > 1 - _normalScreenPercentage.y  && Application.isFocused;
-
-        private CinemachineFramingTransposer _transposer;
         private EntityManager _entityManager;
         private EntityQuery _localChampQuery;
         private bool _cameraSet;
         public Entity localChamp;
-        bool spectatorCamera;
         Camera mainCamera;
-        Vector3 mouseWorldPos;
-        Vector3 mouseLookOffset;
         public float maxLookDistance;
         public LayerMask mouseCastLayers;
         public float smoothTime;
         Vector3 pos_v;
-
-        private CinemachineOrbitalFollow _orbitalFollow;
-        public float horizontalOrbitValue;
-        public float horizontalOrbitSpeed;
         InputSystem_Actions inputActions;
         Vector2 mousePositionDelta;
         Vector2 angles;
         public Vector2 yRotLimit;
         public Vector3 posOffset;
+        public float mouseSensitivity;
         private void Awake()
         {
             inputActions = new InputSystem_Actions();
-            _normalScreenPercentage = _screenPercentageDetection * 0.01f;
-            _transposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-            _orbitalFollow = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineOrbitalFollow>();
             mainCamera = Camera.main;
         }
         void OnEnable()
@@ -80,15 +45,10 @@ namespace TMG.NFE_Tutorial
             _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             _localChampQuery = _entityManager.CreateEntityQuery(typeof(OwnerChampTag));
         }
-
-        private void OnValidate()
-        {
-            _normalScreenPercentage = _screenPercentageDetection * 0.01f;
-        }
         private void InputMouseDelta(InputAction.CallbackContext context)
         {
             mousePositionDelta = context.ReadValue<Vector2>();
-            angles += mousePositionDelta;
+            angles += mousePositionDelta * Time.deltaTime * mouseSensitivity;
             angles.y = Mathf.Clamp(angles.y, yRotLimit.x, yRotLimit.y);
             Quaternion xRot = Quaternion.AngleAxis(angles.x, Vector3.up);
             Quaternion yRot = Quaternion.AngleAxis(angles.y, Vector3.left);
@@ -101,33 +61,8 @@ namespace TMG.NFE_Tutorial
             if(!_cameraSet)
                 return;
                 
-            if(spectatorCamera)
-            {
-                MoveCamera();
-                ZoomCamera();
-            }
-            else
-            {
-                MouseOffset();
-                FollowTargetPlayer();
-            }
-            //CameraOrbit();
+            FollowTargetPlayer();
             
-        }
-        private void CameraOrbit()
-        {
-            float dx = mousePositionDelta.x;
-            horizontalOrbitValue += dx * Time.deltaTime * horizontalOrbitSpeed;
-            _orbitalFollow.HorizontalAxis.Value = horizontalOrbitValue;
-        }
-        private void MouseOffset()
-        {
-            Ray screenToWorldRay = mainCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if(Physics.Raycast(screenToWorldRay, out hit, 100f, mouseCastLayers))
-            {
-                mouseWorldPos = hit.point;
-            }
         }
         void FollowTargetPlayer()
         {
@@ -135,45 +70,6 @@ namespace TMG.NFE_Tutorial
             //Debug.Log($"localChamp.Position = {localTransform.Position}");
             transform.position = Vector3.SmoothDamp(transform.position, localTransform.Position + (float3)posOffset, ref pos_v, smoothTime);
         }
-
-        private void MoveCamera()
-        {
-            if (InScreenLeft)
-            {
-                transform.position += Vector3.left * (_camSpeed * Time.deltaTime);
-            }
-
-            if (InScreenRight)
-            {
-                transform.position += Vector3.right * (_camSpeed * Time.deltaTime);
-            }
-
-            if (InScreenTop)
-            {
-                transform.position += Vector3.back * (_camSpeed * Time.deltaTime);
-            }
-
-            if (InScreenBottom)
-            {
-                transform.position += Vector3.forward * (_camSpeed * Time.deltaTime);
-            }
-            
-            if (!_cameraBounds.Contains(transform.position))
-            {
-                transform.position = _cameraBounds.ClosestPoint(transform.position);
-            }
-        }
-
-        private void ZoomCamera()
-        {
-            if (Mathf.Abs(Input.mouseScrollDelta.y) > float.Epsilon)
-            {
-                _transposer.m_CameraDistance -= Input.mouseScrollDelta.y * _zoomSpeed * Time.deltaTime;
-                _transposer.m_CameraDistance =
-                    Mathf.Clamp(_transposer.m_CameraDistance, _minZoomDistance, _maxZoomDistance);
-            }
-        }
-
         private void SetCamera()
         {
             if (!_cameraSet)
@@ -181,30 +77,11 @@ namespace TMG.NFE_Tutorial
                 if (_localChampQuery.TryGetSingletonEntity<OwnerChampTag>(out var localChamp))
                 {
                     this.localChamp = localChamp;
-                    var team = _entityManager.GetComponentData<MobaTeam>(localChamp).Value;
-                    if(team == TeamType.None)
-                    {
-                        spectatorCamera = true;
-                    }
-
-                    var cameraPosition = team switch
-                    {
-                        TeamType.Blue => _blueTeamPosition,
-                        TeamType.Red => _redTeamPosition,
-                        _ => _spectatorPosition
-                    };
-                    transform.position = cameraPosition;
+                    var playerTransform = _entityManager.GetComponentData<LocalTransform>(localChamp);
+                    transform.position = playerTransform.Position;
                     _cameraSet = true;
                 }
             }
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(_cameraBounds.center, _cameraBounds.size);
-            Gizmos.color = Color.white;
-            Gizmos.DrawSphere(mouseWorldPos, 0.5f);
         }
     }
 }

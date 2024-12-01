@@ -37,8 +37,9 @@ public struct JumpState : IComponentData
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct PlayerCameraDirections : IInputComponentData
 {
-    [GhostField(Quantization = 0)] public float2 Forward;
-    [GhostField(Quantization = 0)] public float2 Right;
+    [GhostField(Quantization = 0)] public float3 Forward;
+    [GhostField(Quantization = 0)] public float3 Right;
+    [GhostField(Quantization = 0)] public float3 Up;
 }
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct PlayerShootInput : IInputComponentData

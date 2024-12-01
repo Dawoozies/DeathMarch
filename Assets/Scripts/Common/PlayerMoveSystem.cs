@@ -18,8 +18,14 @@ public partial struct PlayerMoveSystem : ISystem
             float3 velocity = float3.zero;
             //velocity.x = moveInput.Value.x;
             //velocity.z = moveInput.Value.y;
-            velocity.x = moveInput.Value.x * cameraDirections.Right.x + moveInput.Value.y * cameraDirections.Forward.x;
-            velocity.z = moveInput.Value.x * cameraDirections.Right.y + moveInput.Value.y * cameraDirections.Forward.y;
+            //velocity.x = moveInput.Value.x * cameraDirections.Right.x + moveInput.Value.y * cameraDirections.Forward.x;
+            //velocity.z = moveInput.Value.x * cameraDirections.Right.y + moveInput.Value.y * cameraDirections.Forward.y;
+            velocity += moveInput.Value.x * cameraDirections.Right;
+            velocity += moveInput.Value.y * cameraDirections.Forward;
+            //zero out the y components then normalise
+            velocity.y = 0;
+            velocity = math.normalizesafe(velocity);
+
             // n = moveInput.x * camRight + moveInput.y * camForward
             //v.ValueRW.Linear = velocity * moveSpeed.Value;
             moveVelocity.ValueRW.Value = velocity * moveSpeed.Value;

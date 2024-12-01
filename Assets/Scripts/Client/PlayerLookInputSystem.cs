@@ -25,16 +25,10 @@ public partial class PlayerLookInputSystem : SystemBase
     protected override void OnStartRunning()
     {
         _inputActions.Enable();
-        _inputActions.Player.MousePosition.performed += InputMouseDelta;
     }
     protected override void OnStopRunning()
     {
-        _inputActions.Player.MousePosition.performed -= InputMouseDelta;
         _inputActions.Disable();
-    }
-    void InputMouseDelta(InputAction.CallbackContext context)
-    {
-        mousePositionDelta = context.ReadValue<Vector2>()/100f;
     }
     protected override void OnUpdate()
     {
@@ -42,24 +36,19 @@ public partial class PlayerLookInputSystem : SystemBase
         Entity cameraEntity = SystemAPI.GetSingletonEntity<MainCameraTag>();
         Camera mainCamera = EntityManager.GetComponentObject<MainCamera>(cameraEntity).Value;
 
-        float2 cameraForward = new float2(mainCamera.transform.forward.x, mainCamera.transform.forward.z);
-        float2 cameraRight = new float2(mainCamera.transform.right.x, mainCamera.transform.right.z);
-        cameraForward = math.normalizesafe(cameraForward);
-        cameraRight = math.normalizesafe(cameraRight);
+        float3 cameraForward = mainCamera.transform.forward;
+        float3 cameraRight = mainCamera.transform.right;
+        float3 cameraUp = mainCamera.transform.up;
 
-        Vector3 mousePosition = Input.mousePosition;
-        mousePosition.z = 100f;
-        Vector3 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
-
-        RaycastInput selectionInput = new RaycastInput
+        RaycastInput playerLookCast = new RaycastInput
         {
             Start = mainCamera.transform.position,
-            End = worldPosition,
+            End = mainCamera.transform.position + mainCamera.transform.forward * 100f,
             Filter = _selectionFilter
         };
 
         Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
-        if(collisionWorld.CastRay(selectionInput, out var closestHit))
+        if(collisionWorld.CastRay(playerLookCast, out var closestHit))
         {
             EntityManager.SetComponentData(playerEntity, new PlayerLookInput
             {
@@ -69,7 +58,8 @@ public partial class PlayerLookInputSystem : SystemBase
         EntityManager.SetComponentData(playerEntity, new PlayerCameraDirections 
         {
             Forward = cameraForward,
-            Right = cameraRight
+            Right = cameraRight,
+            Up = cameraUp
         });
     }
 }

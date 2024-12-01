@@ -23,16 +23,17 @@ public partial struct PlayerAnimatorParameterSystem : ISystem
         //However we should not do this
         foreach(var (parent, allParams, entity) in SystemAPI.Query<RefRO<Parent>, DynamicBuffer<AnimatorControllerParameterComponent>>().WithAll<Simulate>().WithEntityAccess())
         {
+            Entity armsRootParent = SystemAPI.GetComponent<Parent>(parent.ValueRO.Value).Value;
             // 0 == Aiming (bool)
-            RefRO<PlayerAimInput> aimInput = SystemAPI.GetComponentRO<PlayerAimInput>(parent.ValueRO.Value);
+            RefRO<PlayerAimInput> aimInput = SystemAPI.GetComponentRO<PlayerAimInput>(armsRootParent);
             var aimingParameter = allParams[0];
             aimingParameter.BoolValue = aimInput.ValueRO.Value;
             allParams.ElementAt(0) = aimingParameter;
 
             // 1 == ShootHeldTime (float)
-            RefRO<PlayerShootInput> shootInput = SystemAPI.GetComponentRO<PlayerShootInput>(parent.ValueRO.Value);
-            RefRO<EquippedWeaponData> equippedWeaponData = SystemAPI.GetComponentRO<EquippedWeaponData>(parent.ValueRO.Value);
-            DynamicBuffer<WeaponDataBufferElement> weaponDataBuffer = SystemAPI.GetBuffer<WeaponDataBufferElement>(parent.ValueRO.Value);
+            RefRO<PlayerShootInput> shootInput = SystemAPI.GetComponentRO<PlayerShootInput>(armsRootParent);
+            RefRO<EquippedWeaponData> equippedWeaponData = SystemAPI.GetComponentRO<EquippedWeaponData>(armsRootParent);
+            DynamicBuffer<WeaponDataBufferElement> weaponDataBuffer = SystemAPI.GetBuffer<WeaponDataBufferElement>(armsRootParent);
             WeaponDataBufferElement weaponDataBufferElement = weaponDataBuffer[equippedWeaponData.ValueRO.EquippedWeaponIndex];
             var shootHeldTimeParameter = allParams[1];
             shootHeldTimeParameter.FloatValue = math.clamp(shootInput.ValueRO.HeldTime/weaponDataBufferElement.ShootHeldTimeMax, 0f, 1f);
