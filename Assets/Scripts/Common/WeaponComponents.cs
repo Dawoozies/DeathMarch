@@ -21,11 +21,18 @@ public struct WeaponDataBufferElement : IBufferElementData
 public struct WeaponHitResultBufferElement : IBufferElementData
 {
     public float3 WeaponFiringPoint;
-    public Entity HitEntity;
+    //public Entity HitEntity;
     public float3 HitPosition;
     public float3 HitNormal;
+    public HitType HitType;
 }
 public struct WeaponEventBufferElement : IBufferElementData
 {
     public bool hasFired;
+}
+public enum HitType
+{
+    Miss = 0,
+    Normal = 1,
+    Critical = 2,
 }

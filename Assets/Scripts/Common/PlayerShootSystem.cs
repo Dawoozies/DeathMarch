@@ -94,13 +94,17 @@ public partial class PlayerShootSystem : SystemBase
                                     hp.ValueRW.Value--;
                                 }
                             }
-
+                            HitType hitType = HitType.Miss;
+                            if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))
+                            {
+                                hitType = HitType.Normal;
+                            }
                             weaponHitBuffer.Add(new WeaponHitResultBufferElement
                             {
                                 WeaponFiringPoint = firingPointWorldTransform.ValueRO.Position,
-                                HitEntity = hit.Entity,
                                 HitPosition = hit.Position,
-                                HitNormal = hit.SurfaceNormal
+                                HitNormal = hit.SurfaceNormal,
+                                HitType = hitType
                             });
 
                             penetrationsLeft--;
@@ -116,17 +120,16 @@ public partial class PlayerShootSystem : SystemBase
                             HitPosition = firingPointWorldTransform.ValueRO.Position + shotVector,
                         });
                     }
-
                     allHits.Dispose();
-
-
                 }
                 //remember that its only the other clients that cant see the host
-                if(networkTime.IsFirstPredictionTick)
+                if (networkTime.IsFirstPredictionTick)
                 {
+                    //what does this need
+                    //it just needs the weapon hit buffer?
                     VisualEffect vfx = EffectsManager.ins.GetEffect(0);
                     VFXEventAttribute shootDirectionAttribute = vfx.CreateVFXEventAttribute();
-                    if(weaponHitBuffer.Length > 0)
+                    if (weaponHitBuffer.Length > 0)
                     {
                         shootDirectionAttribute.SetVector3("ShootDirection", weaponHitBuffer[weaponHitBuffer.Length - 1].HitPosition - weaponHitBuffer[weaponHitBuffer.Length - 1].WeaponFiringPoint);
                     }
@@ -136,6 +139,18 @@ public partial class PlayerShootSystem : SystemBase
                     }
                     shootDirectionAttribute.SetVector3("StartPosition", firingPointWorldTransform.ValueRO.Position);
                     vfx.SendEvent("OnPlay", shootDirectionAttribute);
+
+                    if (weaponHitBuffer.Length > 0)
+                    {
+                        VisualEffect hitMarkerVfx = EffectsManager.ins.GetEffect(1);
+                        foreach (var item in weaponHitBuffer)
+                        {
+                            VFXEventAttribute eventAttribute = hitMarkerVfx.CreateVFXEventAttribute();
+                            eventAttribute.SetVector3("StartPosition", item.HitPosition);
+                            eventAttribute.SetBool("HitSuccess", item.HitType == HitType.Normal);
+                            hitMarkerVfx.SendEvent("OnPlay", eventAttribute);
+                        }
+                    }
                 }
                 //float3 shootDirection = shotVector;
                 //if (allHits.Length > 0)
@@ -158,19 +173,6 @@ public partial class PlayerShootSystem : SystemBase
                 //}
             }
             //lets see if we can get it to work here :)
-
-        }
-
-        foreach (var (aimInput, shootInput, vfxEventAspect) in SystemAPI.Query<
-        PlayerAimInput,
-        PlayerShootInput,
-        VFXEventAspect
-        >().WithAll<Simulate>())
-        {
-            if (aimInput.Value && shootInput.Shoot.IsSet)
-            {
-                vfxEventAspect.EventsFired = false;
-            }
         }
     }
 }

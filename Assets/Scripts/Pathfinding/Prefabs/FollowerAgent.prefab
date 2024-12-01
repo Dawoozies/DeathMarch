@@ -252,7 +252,7 @@ MonoBehaviour:
     m_CollidesWithCategories:
       m_Override: 0
       m_Value:
-        Category00: 0
+        Category00: 1
         Category01: 1
         Category02: 0
         Category03: 0
@@ -309,7 +309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc7ff7d3cda36614e9a31dab69d8c5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHitPoints: 3
+  MaxHitPoints: 2
   healthOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5676591772284122630
 GameObject:

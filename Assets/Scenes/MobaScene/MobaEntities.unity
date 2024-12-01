@@ -32903,7 +32903,7 @@ GameObject:
   - component: {fileID: 1721617862}
   - component: {fileID: 1721617868}
   m_Layer: 0
-  m_Name: Stairs (2)
+  m_Name: Stairs (3)
   m_TagString: Walkable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45682,8 +45682,8 @@ SceneRoots:
   - {fileID: 1725524851}
   - {fileID: 1897746711}
   - {fileID: 956989535}
+  - {fileID: 1721617867}
   - {fileID: 1097260988}
   - {fileID: 708209820}
   - {fileID: 205751671}
-  - {fileID: 1721617867}
   - {fileID: 757660186}
