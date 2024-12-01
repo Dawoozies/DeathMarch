@@ -26,17 +26,16 @@ public partial class PlayerShootInputSystem : SystemBase
         RefRO<PlayerShootInput> currentShootInput = SystemAPI.GetComponentRO<PlayerShootInput>(playerEntity);
         float currentHeldTime = currentShootInput.ValueRO.HeldTime;
         float currentShootTime = currentShootInput.ValueRO.ShootTime;
-        bool aimInput = SystemAPI.GetComponentRO<PlayerAimInput>(playerEntity).ValueRO.Value;
         DynamicBuffer<WeaponDataBufferElement> weaponBuffer = SystemAPI.GetBuffer<WeaponDataBufferElement>(playerEntity);
         RefRO<EquippedWeaponData> equippedWeaponData = SystemAPI.GetComponentRO<EquippedWeaponData>(playerEntity);
         WeaponDataBufferElement weaponDataBufferElement = weaponBuffer[equippedWeaponData.ValueRO.EquippedWeaponIndex];
 
-        float nextHeldTime = _inputActions.Player.Shoot.IsPressed() && aimInput ? currentHeldTime + SystemAPI.Time.DeltaTime : 0;
+        float nextHeldTime = _inputActions.Player.Shoot.IsPressed() ? currentHeldTime + SystemAPI.Time.DeltaTime : 0;
         PlayerShootInput nextShootInput = new PlayerShootInput
         {
             HeldTime = nextHeldTime
         };
-        float nextShootTime = _inputActions.Player.Shoot.IsPressed() && aimInput ? currentShootTime + SystemAPI.Time.DeltaTime : 0;
+        float nextShootTime = _inputActions.Player.Shoot.IsPressed() ? currentShootTime + SystemAPI.Time.DeltaTime : 0;
         if (currentHeldTime == 0f && currentShootTime == 0f && _inputActions.Player.Shoot.WasPressedThisFrame())
         {
             nextShootInput.Shoot.Set();

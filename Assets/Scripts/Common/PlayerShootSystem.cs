@@ -39,7 +39,7 @@ public partial class PlayerShootSystem : SystemBase
             //if(!EntityManager.WorldUnmanaged.IsServer()) continue;
             //get the firing point LocalToWorld
 
-            if (aimInput.Value && shootInput.Shoot.IsSet)
+            if (shootInput.Shoot.IsSet)
             {
                 WeaponDataBufferElement weaponDataBufferElement = weaponDataBuffer[equippedWeaponData.EquippedWeaponIndex];
                 Entity weaponFiringPoint = weaponDataBufferElement.WeaponFiringPoint;
