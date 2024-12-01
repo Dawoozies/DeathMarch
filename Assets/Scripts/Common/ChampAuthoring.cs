@@ -12,6 +12,7 @@ public class ChampAuthoring : MonoBehaviour
     public float coyoteTime;
     public Vector3 gravityDirection;
     public float gravityStrength;
+    public Vector2 groundAngles;
     public float gravityStrengthMax;
     public float gravityAirTimeMax;
 
@@ -65,7 +66,11 @@ public class ChampAuthoring : MonoBehaviour
             AddComponent(entity, new JumpStrength {Value = authoring.jumpStrength});
 
             //Ground check components
-            AddComponent(entity, new GroundCheck{AirTime = 0});
+            AddComponent(entity, new GroundCheck
+            {
+                AirTime = 0,
+                GroundAngles = authoring.groundAngles
+            });
 
             //Gravity components
             AddComponent(entity, new GravityVelocity {Value = float3.zero});

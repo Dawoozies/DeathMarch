@@ -33,4 +33,5 @@ public struct GravityVelocity : IComponentData
 public struct GroundCheck : IComponentData
 {
     [GhostField(Quantization = 0)] public float AirTime;
+    public float2 GroundAngles;
 }
