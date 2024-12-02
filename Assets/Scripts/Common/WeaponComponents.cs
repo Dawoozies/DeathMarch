@@ -10,6 +10,7 @@ public struct EquippedWeaponData : IComponentData
 public struct WeaponDataBufferElement : IBufferElementData
 {
     public Entity WeaponFiringPoint;
+    public Entity WeaponAimDownSightPosition;
     public float ShootHeldTimeMax;
     public float2 HorizontalBounds;
     public float2 VerticalBounds;

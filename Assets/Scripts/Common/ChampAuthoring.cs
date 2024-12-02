@@ -23,6 +23,8 @@ public class ChampAuthoring : MonoBehaviour
     public class WeaponData
     {
         public GameObject firingPoint;
+        public GameObject aimDownSightTarget;
+        public GameObject aimDownSightPosition;
         public float shootHeldTimeMax;
         [Tooltip("Min and max horizontal accuracy bounds")]
         public Vector2 horizontalBounds;
@@ -99,9 +101,11 @@ public class ChampAuthoring : MonoBehaviour
             {
                 WeaponData weaponData = authoring.allWeaponData[i];
                 Entity weaponFiringPointEntity = GetEntity(weaponData.firingPoint, TransformUsageFlags.Dynamic);
+                Entity weaponAimDownSightPosition = GetEntity(weaponData.aimDownSightPosition, TransformUsageFlags.Dynamic);
                 WeaponDataBufferElement weaponDataBufferElement = new WeaponDataBufferElement 
                 {
                     WeaponFiringPoint = weaponFiringPointEntity,
+                    WeaponAimDownSightPosition = weaponAimDownSightPosition,
                     ShootHeldTimeMax = weaponData.shootHeldTimeMax,
                     HorizontalBounds = weaponData.horizontalBounds,
                     VerticalBounds = weaponData.verticalBounds,

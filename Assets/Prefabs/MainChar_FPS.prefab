@@ -1126,6 +1126,8 @@ MonoBehaviour:
   equippedWeaponIndex: 0
   allWeaponData:
   - firingPoint: {fileID: 6180843323854027495}
+    aimDownSightTarget: {fileID: 0}
+    aimDownSightPosition: {fileID: 2132325966372370047}
     shootHeldTimeMax: 3
     horizontalBounds: {x: 0.02, y: 0.1}
     verticalBounds: {x: 0, y: 0.1}
@@ -1688,6 +1690,37 @@ Transform:
   - {fileID: 2189523000041371512}
   - {fileID: 4600554806143058356}
   m_Father: {fileID: 4381406466048075050}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2132325966372370047
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2404693365214610830}
+  m_Layer: 7
+  m_Name: P90AimDownSightPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2404693365214610830
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132325966372370047}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.012, z: 0.015}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8052014413298549387}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2133593711894272594
 GameObject:
@@ -5139,6 +5172,7 @@ Transform:
   m_Children:
   - {fileID: 3195829183290620591}
   - {fileID: 8998035886526249538}
+  - {fileID: 2404693365214610830}
   m_Father: {fileID: 1244095142228340635}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8302031015032091454

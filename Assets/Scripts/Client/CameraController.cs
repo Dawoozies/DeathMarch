@@ -24,6 +24,10 @@ namespace TMG.NFE_Tutorial
         public Vector2 yRotLimit;
         public Vector3 posOffset;
         public float mouseSensitivity;
+        Vector3 normalPos;
+        Vector3 aimDownSightPos;
+        public float aimDownSightSpeed;
+        float aimDownSightValue;
         private void Awake()
         {
             inputActions = new InputSystem_Actions();
@@ -60,15 +64,33 @@ namespace TMG.NFE_Tutorial
 
             if(!_cameraSet)
                 return;
-                
             FollowTargetPlayer();
-            
+            AimDownSight();
+            PlayerAimInput aimInput = _entityManager.GetComponentData<PlayerAimInput>(localChamp);
+            if(aimInput.Value)
+            {
+                aimDownSightValue += Time.deltaTime * aimDownSightSpeed;
+            }
+            else
+            {
+                aimDownSightValue -= Time.deltaTime * aimDownSightSpeed;
+            }
+            aimDownSightValue = Mathf.Clamp01(aimDownSightValue);
+            Vector3 targetPos = Vector3.Lerp(normalPos, aimDownSightPos, aimDownSightValue);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref pos_v, smoothTime);
+        }
+        void AimDownSight()
+        {
+            var equippedWeaponData = _entityManager.GetComponentData<EquippedWeaponData>(localChamp);
+            var weaponDataBuffer = _entityManager.GetBuffer<WeaponDataBufferElement>(localChamp);
+            WeaponDataBufferElement weaponData = weaponDataBuffer[equippedWeaponData.EquippedWeaponIndex];
+            LocalToWorld ADSWorldPos = _entityManager.GetComponentData<LocalToWorld>(weaponData.WeaponAimDownSightPosition);
+            aimDownSightPos = ADSWorldPos.Position;
         }
         void FollowTargetPlayer()
         {
             var localTransform = _entityManager.GetComponentData<LocalTransform>(localChamp);
-            //Debug.Log($"localChamp.Position = {localTransform.Position}");
-            transform.position = Vector3.SmoothDamp(transform.position, localTransform.Position + (float3)posOffset, ref pos_v, smoothTime);
+            normalPos = localTransform.Position + (float3)posOffset;
         }
         private void SetCamera()
         {
