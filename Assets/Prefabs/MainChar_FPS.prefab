@@ -1126,7 +1126,6 @@ MonoBehaviour:
   equippedWeaponIndex: 0
   allWeaponData:
   - firingPoint: {fileID: 6180843323854027495}
-    aimDownSightTarget: {fileID: 0}
     aimDownSightPosition: {fileID: 2132325966372370047}
     shootHeldTimeMax: 3
     horizontalBounds: {x: 0.02, y: 0.1}
@@ -1134,7 +1133,8 @@ MonoBehaviour:
     ammo: 50
     rateOfFire: 14
     range: 100
-    penetration: 2
+    penetration: 4
+    aimDownSightStability: 100
 --- !u!114 &4734957427254244261
 MonoBehaviour:
   m_ObjectHideFlags: 0

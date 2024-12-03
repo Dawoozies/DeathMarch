@@ -110,7 +110,10 @@ public class FollowerAgentBaker : Baker<FollowerAgentAuthoring>
 		AddComponent(agentEntity, new AgentCylinderShape { height = authoring.AgentHeight, radius = authoring.AgentRadius });
 
 		// default destination point
-		AddComponent(agentEntity, new DestinationPoint { destination = authoring.DefaultDestination });
+		AddComponent(agentEntity, new DestinationPoint 
+		{ 
+			destination = authoring.DefaultDestination
+		});
 
 		// movement plane
 		NativeMovementPlane plane;
@@ -150,7 +153,7 @@ public class FollowerAgentBaker : Baker<FollowerAgentAuthoring>
 		if (authoring.ManagedOpts.EnableGravity) { AddComponent<GravityState>(agentEntity); }
 
 		// added after 5.0.9
-		AddComponent(agentEntity, authoring.RepathPolicy);
+		AddComponent<Pathfinding.ECS.AutoRepathPolicy>(agentEntity, authoring.RepathPolicy);
 
 		// added after 5.0.9
 		AddSharedComponent(agentEntity, new AgentMovementPlaneSource { value = authoring.MovePlaneSource });

@@ -10,8 +10,9 @@ namespace Pathfinding.ECS {
 	using Pathfinding.ECS.RVO;
 	using Pathfinding.RVO;
 	using Unity.Collections;
+    using UnityEngine;
 
-	[UpdateInGroup(typeof(AIMovementSystemGroup))]
+    [UpdateInGroup(typeof(AIMovementSystemGroup))]
 	[UpdateBefore(typeof(FollowerControlSystem))]
 	[BurstCompile]
 	public partial struct RepairPathSystem : ISystem {
@@ -141,6 +142,7 @@ namespace Pathfinding.ECS {
 						path.nnConstraint.distanceMetric = DistanceMetric.ClosestAsSeenFromAboveSoft(movementPlane.value.up);
 						ManagedState.SetPath(path, state, in movementPlane, ref destination);
 						autoRepathPolicy.DidRecalculatePath(destination.destination, time);
+						Debug.Log("Recalculating path");
 					}
 				}
 			}

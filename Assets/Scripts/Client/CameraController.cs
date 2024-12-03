@@ -9,6 +9,7 @@ namespace TMG.NFE_Tutorial
 {
     public class CameraController : MonoBehaviour
     {
+        public CinemachineCamera firstPersonCamera;
         private EntityManager _entityManager;
         private EntityQuery _localChampQuery;
         private bool _cameraSet;
@@ -28,6 +29,8 @@ namespace TMG.NFE_Tutorial
         Vector3 aimDownSightPos;
         public float aimDownSightSpeed;
         float aimDownSightValue;
+        public float normalFOV;
+        public float aimDownSightFOV;
         private void Awake()
         {
             inputActions = new InputSystem_Actions();
@@ -45,6 +48,7 @@ namespace TMG.NFE_Tutorial
         }
         private void Start()
         {
+            firstPersonCamera = GetComponentInChildren<CinemachineCamera>();
             if (World.DefaultGameObjectInjectionWorld == null) return;
             _entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
             _localChampQuery = _entityManager.CreateEntityQuery(typeof(OwnerChampTag));
@@ -77,6 +81,7 @@ namespace TMG.NFE_Tutorial
             }
             aimDownSightValue = Mathf.Clamp01(aimDownSightValue);
             Vector3 targetPos = Vector3.Lerp(normalPos, aimDownSightPos, aimDownSightValue);
+            firstPersonCamera.Lens.FieldOfView = Mathf.Lerp(normalFOV, aimDownSightFOV, aimDownSightValue);
             transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref pos_v, smoothTime);
         }
         void AimDownSight()

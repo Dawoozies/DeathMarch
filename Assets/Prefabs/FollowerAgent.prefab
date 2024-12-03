@@ -72,7 +72,7 @@ MonoBehaviour:
   IsStopped: 0
   RepathPolicy:
     mode: 2
-    period: 2
+    period: 10
   AgentOrientation: 0
   MovePlane: 1
   ManagedOpts:
@@ -109,13 +109,13 @@ MonoBehaviour:
       TraversableTags: -1
     EnableGravity: 1
     RvoAgentOpts:
-      agentTimeHorizon: 1
+      agentTimeHorizon: 0.2
       obstacleTimeHorizon: 0.1
-      maxNeighbours: 5
+      maxNeighbours: 2
       layer: 1
       collidesWith: -1
       priority: 0.5
-      debug: 255
+      debug: 0
       locked: 0
   TagPenalties: 
 --- !u!114 &8480720323427514599

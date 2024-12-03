@@ -46,8 +46,13 @@ public partial class PlayerShootSystem : SystemBase
                 RefRO<LocalToWorld> firingPointWorldTransform = SystemAPI.GetComponentRO<LocalToWorld>(weaponFiringPoint);
                 // Shot direction calculation
                 float3 shotDir = cameraDirections.Forward;
-                shotDir += cameraDirections.Right * shootInput.ShootSway.x;
-                shotDir += cameraDirections.Up * shootInput.ShootSway.y;
+                float2 sway = shootInput.ShootSway;
+                if(aimInput.Value)
+                {
+                    sway /= 1f+weaponDataBufferElement.AimDownSightStability;
+                }
+                shotDir += cameraDirections.Right *sway.x;
+                shotDir += cameraDirections.Up * sway.y;
                 float3 shotVector = shotDir * weaponDataBufferElement.Range;
                 //We are getting input client and server side. But it's important we only write/change
                 //things server side. Any change of data must only be done on the server.

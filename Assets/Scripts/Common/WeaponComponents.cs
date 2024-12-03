@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using Unity.NetCode;
+using UnityEngine;
 public struct EquippedWeaponData : IComponentData
 {
     public int EquippedWeaponIndex;
@@ -18,6 +19,7 @@ public struct WeaponDataBufferElement : IBufferElementData
     public float RateOfFire;
     public float Range;
     public int Penetration;
+    public float AimDownSightStability;
 }
 public struct WeaponHitResultBufferElement : IBufferElementData
 {

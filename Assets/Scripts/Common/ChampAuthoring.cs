@@ -23,7 +23,6 @@ public class ChampAuthoring : MonoBehaviour
     public class WeaponData
     {
         public GameObject firingPoint;
-        public GameObject aimDownSightTarget;
         public GameObject aimDownSightPosition;
         public float shootHeldTimeMax;
         [Tooltip("Min and max horizontal accuracy bounds")]
@@ -35,6 +34,8 @@ public class ChampAuthoring : MonoBehaviour
         public float rateOfFire;
         public float range;
         public int penetration;
+        [Tooltip("Shoot sway gets divided by this number on aim down sight")]
+        public float aimDownSightStability;
     }
     public class ChampBaker : Baker<ChampAuthoring>
     {
@@ -112,7 +113,8 @@ public class ChampAuthoring : MonoBehaviour
                     Ammo = weaponData.ammo,
                     RateOfFire = weaponData.rateOfFire,
                     Range = weaponData.range,
-                    Penetration = weaponData.penetration
+                    Penetration = weaponData.penetration,
+                    AimDownSightStability = weaponData.aimDownSightStability
                 };
                 weaponDataBuffer.Add(weaponDataBufferElement);
             }

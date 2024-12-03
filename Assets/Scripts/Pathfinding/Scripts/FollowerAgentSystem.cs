@@ -4,31 +4,85 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
+//queue distance calculations
+public struct QueuedAgentTag : IComponentData { }
 [BurstCompile]
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-public partial struct FollowerAgentSystem : ISystem
+public partial class FollowerAgentSystem : SystemBase
 {
-    public void OnCreate(ref SystemState state)
+    //get everyone who is not in the queue and add them - destination point not in queue
+    //first N agents in queue get their destinations set
+    //repeat
+    private NativeList<Entity> agents;
+    private EntityQuery destinationQuery;
+    //if i want to do 10 per frame
+    private float timer;
+    private float maxTime = 0.1f;
+    protected override void OnCreate()
     {
-        state.RequireForUpdate<DestinationTag>();
+        RequireForUpdate<DestinationTag>();
+        agents = new NativeList<Entity>(Allocator.Persistent);
+        destinationQuery = GetEntityQuery(ComponentType.ReadOnly<LocalTransform>(), ComponentType.ReadOnly<DestinationTag>());
+        timer = maxTime;
+    }
+    protected override void OnDestroy()
+    {
+        agents.Dispose();
     }
     [BurstCompile]
-    public void OnUpdate(ref SystemState state)
+    protected override void OnUpdate()
     {
-        var destinationEntity = SystemAPI.GetSingletonEntity<DestinationTag>();
-        NativeList<LocalTransform> destinationTransforms = new NativeList<LocalTransform>(Allocator.Temp);
-        foreach (var localTransform in SystemAPI.Query<LocalTransform>().WithAll<Simulate, DestinationTag>())
+        timer += SystemAPI.Time.DeltaTime;
+        if (timer < maxTime)
         {
-            destinationTransforms.Add(localTransform);
-        }
-        if(destinationTransforms.Length <= 0)
             return;
-        foreach (var (destinationPoint, transform) in SystemAPI.Query<RefRW<DestinationPoint>, LocalTransform>().WithAll<Simulate>())
-        {
-            destinationPoint.ValueRW.destination = GetClosestDestination(destinationTransforms, transform.Position).Position;
         }
+
+        //change this so that it spreads this over many frames
+        EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
+        foreach (var (_, entity) in SystemAPI.Query<DestinationPoint>().WithNone<QueuedAgentTag>().WithAll<Simulate>().WithEntityAccess())
+        {
+            ecb.AddComponent<QueuedAgentTag>(entity);
+            agents.Add(entity);
+            UnityEngine.Debug.LogError($"Adding agent to agents");
+        }
+        ecb.Playback(EntityManager);
+        int maxToProcess = 10;
+        int amountToProcess = math.min(maxToProcess, agents.Length);
+        if (amountToProcess <= 0)
+            return;
+
+        var destinationEntity = SystemAPI.GetSingletonEntity<DestinationTag>();
+        var destinations = destinationQuery.ToComponentDataArray<LocalTransform>(Allocator.Temp);
+        for (int i = 0; i < amountToProcess; i++)
+        {
+            if (agents.Length <= 0)
+                break;
+            Entity agent = agents[0];
+            if (!EntityManager.Exists(agent))
+            {
+                //remove this guy
+                agents.RemoveAt(0);
+                continue;
+            }
+            if(!EntityManager.HasComponent<LocalTransform>(agent))
+            {
+                agents.RemoveAt(0);
+                continue;
+            }
+            LocalTransform agentTransform = EntityManager.GetComponentData<LocalTransform>(agent);
+            EntityManager.SetComponentData<DestinationPoint>(agent, new DestinationPoint
+            {
+                destination = GetClosestDestination(destinations, agentTransform.Position).Position
+            });
+            agents.RemoveAt(0);
+            agents.Add(agent);
+        }
+        destinations.Dispose();
+        timer = 0f;
+        UnityEngine.Debug.LogError($"Timer={timer} amountToProcess={amountToProcess} agents.Length={agents.Length}");
     }
-    public LocalTransform GetClosestDestination(NativeList<LocalTransform> destinations, float3 agentPos)
+    public LocalTransform GetClosestDestination(NativeArray<LocalTransform> destinations, float3 agentPos)
     {
         float closestDist = math.INFINITY;
         int closestDestination = 0;
@@ -49,3 +103,5 @@ public partial struct FollowerAgentSystem : ISystem
         return destinations[closestDestination];
     }
 }
+//if something has destinationPoint then it needs updating
+//this will be on every destination point
