@@ -25,6 +25,7 @@ public class ChampAuthoring : MonoBehaviour
         public GameObject firingPoint;
         public GameObject aimDownSightPosition;
         public float shootHeldTimeMax;
+        public float aimHeldTimeMax;
         [Tooltip("Min and max horizontal accuracy bounds")]
         public Vector2 horizontalBounds;
         [Tooltip("Min and max vertical accuracy bounds")]
@@ -87,7 +88,10 @@ public class ChampAuthoring : MonoBehaviour
             });
 
             //Player Aim Input
-            AddComponent(entity, new PlayerAimInput{Value = false});
+            AddComponent(entity, new PlayerAimInput{
+                Value = false,
+                HeldTime = 0f
+            });
 
             //Player Shoot Input
             AddComponent(entity, new PlayerShootInput
@@ -108,6 +112,7 @@ public class ChampAuthoring : MonoBehaviour
                     WeaponFiringPoint = weaponFiringPointEntity,
                     WeaponAimDownSightPosition = weaponAimDownSightPosition,
                     ShootHeldTimeMax = weaponData.shootHeldTimeMax,
+                    AimHeldTimeMax = weaponData.aimHeldTimeMax,
                     HorizontalBounds = weaponData.horizontalBounds,
                     VerticalBounds = weaponData.verticalBounds,
                     Ammo = weaponData.ammo,

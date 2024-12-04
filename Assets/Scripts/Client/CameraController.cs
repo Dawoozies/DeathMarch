@@ -18,6 +18,7 @@ namespace TMG.NFE_Tutorial
         public float maxLookDistance;
         public LayerMask mouseCastLayers;
         public float smoothTime;
+        public float defaultSmoothTime;
         Vector3 pos_v;
         InputSystem_Actions inputActions;
         Vector2 mousePositionDelta;
@@ -82,6 +83,7 @@ namespace TMG.NFE_Tutorial
             aimDownSightValue = Mathf.Clamp01(aimDownSightValue);
             Vector3 targetPos = Vector3.Lerp(normalPos, aimDownSightPos, aimDownSightValue);
             firstPersonCamera.Lens.FieldOfView = Mathf.Lerp(normalFOV, aimDownSightFOV, aimDownSightValue);
+            smoothTime = aimDownSightValue > 0 ? 0f : defaultSmoothTime;
             transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref pos_v, smoothTime);
         }
         void AimDownSight()

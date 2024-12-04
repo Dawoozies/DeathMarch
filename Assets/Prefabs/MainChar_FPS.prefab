@@ -178,7 +178,7 @@ GameObject:
   - component: {fileID: 4013528457814875637}
   - component: {fileID: 1549639806840745016}
   m_Layer: 7
-  m_Name: Armature.RightArm
+  m_Name: RightArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1128,6 +1128,7 @@ MonoBehaviour:
   - firingPoint: {fileID: 6180843323854027495}
     aimDownSightPosition: {fileID: 2132325966372370047}
     shootHeldTimeMax: 3
+    aimHeldTimeMax: 0.2
     horizontalBounds: {x: 0.02, y: 0.1}
     verticalBounds: {x: 0, y: 0.1}
     ammo: 50
@@ -2153,7 +2154,7 @@ GameObject:
   - component: {fileID: 8404024329279167271}
   - component: {fileID: 3993588996395379636}
   m_Layer: 7
-  m_Name: Armature.LeftArm
+  m_Name: LeftArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

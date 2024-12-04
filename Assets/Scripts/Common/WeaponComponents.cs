@@ -13,6 +13,7 @@ public struct WeaponDataBufferElement : IBufferElementData
     public Entity WeaponFiringPoint;
     public Entity WeaponAimDownSightPosition;
     public float ShootHeldTimeMax;
+    public float AimHeldTimeMax;
     public float2 HorizontalBounds;
     public float2 VerticalBounds;
     public int Ammo;
@@ -24,7 +25,6 @@ public struct WeaponDataBufferElement : IBufferElementData
 public struct WeaponHitResultBufferElement : IBufferElementData
 {
     public float3 WeaponFiringPoint;
-    //public Entity HitEntity;
     public float3 HitPosition;
     public float3 HitNormal;
     public HitType HitType;

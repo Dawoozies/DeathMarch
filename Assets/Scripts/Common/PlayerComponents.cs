@@ -25,6 +25,7 @@ public struct PlayerJumpInput : IInputComponentData
 public struct PlayerAimInput : IInputComponentData
 {
     [GhostField] public bool Value;
+    [GhostField(Quantization = 0)] public float HeldTime;
 }
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct JumpState : IComponentData

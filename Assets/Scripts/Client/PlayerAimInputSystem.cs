@@ -9,27 +9,27 @@ public partial class PlayerAimInputSystem : SystemBase
     {
         _inputActions = new InputSystem_Actions();
         RequireForUpdate<OwnerChampTag>();
+        RequireForUpdate<PlayerAimInput>();
     }
     protected override void OnStartRunning()
     {
         _inputActions.Enable();
-        _inputActions.Player.Aim.performed += OnAimInput;
     }
     protected override void OnStopRunning()
     {
-        _inputActions.Player.Aim.performed -= OnAimInput;
         _inputActions.Disable();
-    }
-    private void OnAimInput(InputAction.CallbackContext callbackContext)
-    {
-        float inputValue = callbackContext.ReadValue<float>();
-        Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
-        EntityManager.SetComponentData(playerEntity, new PlayerAimInput
-        {
-            Value = inputValue > 0 ? true : false
-        });
     }
     protected override void OnUpdate()
     {
+        Entity playerEntity = SystemAPI.GetSingletonEntity<OwnerChampTag>();
+        RefRO<PlayerAimInput> aimInput = SystemAPI.GetComponentRO<PlayerAimInput>(playerEntity);
+        float currentHeldTime = aimInput.ValueRO.HeldTime;
+        float nextHeldTime = _inputActions.Player.Aim.IsPressed() ? currentHeldTime + SystemAPI.Time.DeltaTime : 0;
+        PlayerAimInput nextAimInput = new PlayerAimInput
+        {
+            Value = _inputActions.Player.Aim.IsPressed(),
+            HeldTime = nextHeldTime
+        };
+        EntityManager.SetComponentData(playerEntity, nextAimInput);
     }
 }
