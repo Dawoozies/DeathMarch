@@ -66,13 +66,17 @@ namespace TMG.NFE_Tutorial
         private void Update()
         {
             SetCamera();
-
-            if(!_cameraSet)
+            if (!_cameraSet)
+                return;
+        }
+        void LateUpdate()
+        {
+            if (!_cameraSet)
                 return;
             FollowTargetPlayer();
             AimDownSight();
             PlayerAimInput aimInput = _entityManager.GetComponentData<PlayerAimInput>(localChamp);
-            if(aimInput.Value)
+            if (aimInput.Value)
             {
                 aimDownSightValue += Time.deltaTime * aimDownSightSpeed;
             }
@@ -96,8 +100,8 @@ namespace TMG.NFE_Tutorial
         }
         void FollowTargetPlayer()
         {
-            var localTransform = _entityManager.GetComponentData<LocalTransform>(localChamp);
-            normalPos = localTransform.Position + (float3)posOffset;
+            var worldPos = _entityManager.GetComponentData<LocalToWorld>(localChamp);
+            normalPos = worldPos.Position + (float3)posOffset;
         }
         private void SetCamera()
         {

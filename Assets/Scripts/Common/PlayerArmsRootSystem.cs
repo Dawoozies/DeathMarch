@@ -15,7 +15,12 @@ public partial struct PlayerArmsRootSystem : ISystem
         foreach (var (parent, transform, followCamForward) in SystemAPI.Query<Parent, RefRW<LocalTransform>, RefRW<FollowCameraForward>>().WithAll<Simulate>())
         {
             var cameraDirections = SystemAPI.GetComponentRO<PlayerCameraDirections>(parent.Value);
-            transform.ValueRW.Rotation = quaternion.LookRotationSafe(cameraDirections.ValueRO.Forward, cameraDirections.ValueRO.Up);
+            float dot = math.dot(transform.ValueRO.Forward(), cameraDirections.ValueRO.Forward);
+            if(dot < 0)
+                dot = 0;
+            var cameraRot = quaternion.LookRotationSafe(cameraDirections.ValueRO.Forward, cameraDirections.ValueRO.Up);
+            transform.ValueRW.Rotation = math.slerp(transform.ValueRO.Rotation, cameraRot, dot);
+            //transform.ValueRW.Rotation = quaternion.LookRotationSafe(cameraDirections.ValueRO.Forward, cameraDirections.ValueRO.Up);
         }
     }
 }
