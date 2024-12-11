@@ -37,7 +37,6 @@ public partial class FollowerAgentSystem : SystemBase
         {
             return;
         }
-
         //change this so that it spreads this over many frames
         EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
         foreach (var (_, entity) in SystemAPI.Query<DestinationPoint>().WithNone<QueuedAgentTag>().WithAll<Simulate>().WithEntityAccess())
@@ -47,7 +46,7 @@ public partial class FollowerAgentSystem : SystemBase
             //UnityEngine.Debug.LogError($"Adding agent to agents");
         }
         ecb.Playback(EntityManager);
-        int maxToProcess = 10;
+        int maxToProcess = 5;
         int amountToProcess = math.min(maxToProcess, agents.Length);
         if (amountToProcess <= 0)
             return;

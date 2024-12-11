@@ -8,7 +8,7 @@ using Pathfinding.ECS;
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct RadialSpawnerSystem : ISystem
 {
-    const int maximumSpawnAmount = 200;
+    const int maximumSpawnAmount = 2000;
     private EntityQuery destinationPointQuery;
     public void OnCreate(ref SystemState state)
     {
@@ -34,7 +34,7 @@ public partial struct RadialSpawnerSystem : ISystem
             for (int i = 0; i < spawner.ValueRO.BatchSize; i++)
             {
                 Entity spawnedEntity = state.EntityManager.Instantiate(spawner.ValueRO.PrefabToSpawn);
-                float3 spawnPos = GetRadialPoint(currentAngle, spawner.ValueRO.Radius);
+                float3 spawnPos = localTransform.Position + GetRadialPoint(currentAngle, spawner.ValueRO.Radius);
                 spawnPos.y = localTransform.Position.y;
                 state.EntityManager.SetComponentData(spawnedEntity, LocalTransform.FromPosition(spawnPos));
                 currentAngle = (currentAngle + spawner.ValueRO.AngleDelta) % 360f;

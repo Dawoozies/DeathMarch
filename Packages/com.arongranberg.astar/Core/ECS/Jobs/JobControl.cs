@@ -47,7 +47,10 @@ namespace Pathfinding.ECS {
 			// Clamp the agent to the navmesh.
 			//Debug.LogWarning($"BEFORE CLAMP transform.pos={transform.Position} state.closestOnNavmesh={state.closestOnNavmesh}");
 			//var position = ClampToNavmesh(transform.Position, state.closestOnNavmesh, in shape, in movementPlane);
-			var position = state.closestOnNavmesh;
+			
+			//var position = state.closestOnNavmesh;
+			var position = transform.Position;
+			
 			//Debug.LogWarning($"AFTER CLAMP transform.pos={position}");
 
 			edgesScratch.Clear();
@@ -73,7 +76,7 @@ namespace Pathfinding.ECS {
 			var distanceToSteeringTarget = math.max(0, state.remainingDistanceToEndOfPart - stopDistance);
 			var rotation = movementPlane.value.ToPlane(transform.Rotation) - state.rotationOffset - state.rotationOffset2;
 
-			transform.Position = position;
+			//transform.Position = position;
 
 			if (dt > 0.000001f) {
 				if (!math.isfinite(distanceToSteeringTarget)) {

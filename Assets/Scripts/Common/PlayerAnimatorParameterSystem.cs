@@ -39,7 +39,7 @@ public partial struct PlayerAnimatorParameterSystem : ISystem
             shootHeldTimeParameter.FloatValue = math.clamp(shootInput.ValueRO.HeldTime / weaponDataBufferElement.ShootHeldTimeMax, 0f, 1f);
             allParams.ElementAt(1) = shootHeldTimeParameter;
 
-            Debug.Log($"AimHeldTime={aimingParameter.FloatValue}");
+            //Debug.Log($"AimHeldTime={aimingParameter.FloatValue}");
             ////Debug.Log($"Parent={parent.ValueRO.Value.Index}:{parent.ValueRO.Value.Version}Entity={entity.Index}:{entity.Version}aim={aimInput.ValueRO.Value}");
         }
     }

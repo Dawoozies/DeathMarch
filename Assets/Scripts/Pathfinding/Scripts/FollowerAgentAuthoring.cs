@@ -98,11 +98,12 @@ public class FollowerAgentBaker : Baker<FollowerAgentAuthoring>
 		AddComponent<MovementControl>(agentEntity); // i think these get set automatically
 		AddComponent<SearchState>(agentEntity);
 		AddComponent<MovementStatistics>(agentEntity); // does lastPos need to be set in initialize or spawn system?
-		AddComponent<ResolvedMovement>(agentEntity);
+	    AddComponent<ResolvedMovement>(agentEntity);
 		AddComponent<SimulateMovement>(agentEntity);
 		AddComponent<SimulateMovementRepair>(agentEntity);
 		AddComponent<SimulateMovementControl>(agentEntity);
 		AddComponent<SimulateMovementFinalize>(agentEntity);
+		
 		//AddComponent<SyncPositionWithTransform>(agentEntity);
 		//AddComponent<SyncRotationWithTransform>(agentEntity);
 

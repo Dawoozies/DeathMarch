@@ -3,6 +3,7 @@ using System.Diagnostics;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 
 namespace Pathfinding.ECS {
@@ -55,7 +56,7 @@ namespace Pathfinding.ECS {
 				state.rotationOffset2 += math.clamp(-state.rotationOffset2, -extraRotationSpeed * dt, extraRotationSpeed * dt);
 			}
 
-			transform.Rotation = movementPlane.value.ToWorldRotation(newInternalRotation + state.rotationOffset + state.rotationOffset2);
+			//transform.Rotation = movementPlane.value.ToWorldRotation(newInternalRotation + state.rotationOffset + state.rotationOffset2);
 		}
 
 		public static float3 MoveWithoutGravity (ref LocalTransform transform, in ResolvedMovement resolvedMovement, in AgentMovementPlane movementPlane, float dt) {
@@ -81,14 +82,17 @@ namespace Pathfinding.ECS {
 		}
 
 		public void Execute (ref LocalTransform transform, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics) {
-			MoveAgent(ref transform, in shape, in movementPlane, ref state, in movementSettings, in resolvedMovement, ref movementStatistics, dt);
+			MoveAgent(ref transform,in shape, in movementPlane, ref state, in movementSettings, in resolvedMovement, ref movementStatistics, dt);
 		}
 
-		public static void MoveAgent (ref LocalTransform transform, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics, float dt) {
+		public static void MoveAgent (ref LocalTransform transform,in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics, float dt) {
 			var delta = MoveWithoutGravity(ref transform, in resolvedMovement, in movementPlane, dt);
 			UnityEngine.Assertions.Assert.IsTrue(math.all(math.isfinite(delta)), "Refusing to set the agent's position to a non-finite vector");
 			//UnityEngine.Debug.LogError($"delta={delta} transform.position={transform.Position}");
-			transform.Position += delta;
+			
+			//physicsVelocity.Linear += delta;
+			//transform.Position += delta;
+			
 			// In 2D games, the agent may move slightly in the Z direction, due to floating point errors.
 			// Some users get confused about this, so if the Z coordinate is very close to zero, just set it to zero.
 			if (math.abs(transform.Position.z) < 0.00001f) transform.Position.z = 0;

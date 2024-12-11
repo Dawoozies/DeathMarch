@@ -142,7 +142,7 @@ namespace Pathfinding.ECS {
 						path.nnConstraint.distanceMetric = DistanceMetric.ClosestAsSeenFromAboveSoft(movementPlane.value.up);
 						ManagedState.SetPath(path, state, in movementPlane, ref destination);
 						autoRepathPolicy.DidRecalculatePath(destination.destination, time);
-						Debug.Log("Recalculating path");
+						//Debug.Log("Recalculating path");
 					}
 				}
 			}

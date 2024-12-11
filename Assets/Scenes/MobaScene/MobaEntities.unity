@@ -23362,7 +23362,7 @@ MonoBehaviour:
   spawnTime: 0.1
   batchSize: 5
   startAngle: 0
-  radius: 200
+  radius: 100
   angleDelta: 2
 --- !u!4 &1375972112
 Transform:

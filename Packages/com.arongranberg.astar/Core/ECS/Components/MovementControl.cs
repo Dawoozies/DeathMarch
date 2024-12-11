@@ -1,11 +1,10 @@
 #if MODULE_ENTITIES
 using Unity.Entities;
 using Unity.Mathematics;
-
+using Unity.NetCode;
 namespace Pathfinding.ECS {
 	using Pathfinding;
 	using Pathfinding.Util;
-
 	/// <summary>
 	/// Desired movement for an agent.
 	/// This data will be fed to the local avoidance system to calculate the final movement of the agent.

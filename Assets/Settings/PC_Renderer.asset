@@ -38,6 +38,19 @@ MonoBehaviour:
   passIndex: 0
   bindDepthStencilAttachment: 0
   m_Version: 1
+--- !u!114 &-2063561866103658122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 241f64a005256f7e091422226bb805c5, type: 3}
+  m_Name: AlineURPRenderPassFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57,7 +70,8 @@ MonoBehaviour:
   - {fileID: 7833122117494664109}
   - {fileID: -4450479666942981591}
   - {fileID: -6445042571150681312}
-  m_RendererFeatureMap: ad6b866f10d7b46c29cac39352b83cc2201b4bc8ed9b8ea6
+  - {fileID: -2063561866103658122}
+  m_RendererFeatureMap: ad6b866f10d7b46c29cac39352b83cc2201b4bc8ed9b8ea67669d97e6ac15ce3
   m_UseNativeRenderPass: 1
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
