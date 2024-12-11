@@ -23,6 +23,15 @@
         "com.unity.ugui": "1.0.0"
       }
     },
+    "com.harumak.urpgrabpass": {
+      "version": "https://github.com/Haruma-K/URPGrabPass.git?path=/Assets/URPGrabPass",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.render-pipelines.universal": "10.2.0"
+      },
+      "hash": "e40a9fc0b29b3e2adab2d67e35a53b8fa4ff5c3d"
+    },
     "com.rukhanka.animation": {
       "version": "file:com.rukhanka.animation",
       "depth": 0,
@@ -107,6 +116,15 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.rider": {
+      "version": "3.0.34",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.6"
+      },
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {

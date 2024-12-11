@@ -11474,6 +11474,111 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &604416115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 604416119}
+  - component: {fileID: 604416118}
+  - component: {fileID: 604416117}
+  - component: {fileID: 604416116}
+  m_Layer: 0
+  m_Name: Blackhole
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &604416116
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604416115}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &604416117
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604416115}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 5893951f775e9b645a801d81449b1e9d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &604416118
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604416115}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &604416119
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 604416115}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17.27, y: -5.34, z: 89.61}
+  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &667784631
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38156,7 +38261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1073741824
   data:
-    dataString: UEsDBBQAAAgIAABYIexXb0pfPQIAAJYEAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFtU01v2zAM/SuBz9vQNkmR7Nik6w79GJICK1rswEi0LVSWMkpOmhb97yMVOXHRnQQ/8pF85PNboWogUBFpAdq0ofg+OPk2/DIolHfRt3QDL5dEngQXFK1dmldMaacMbME+w8riTzRVHRnugzNrmlVKHTPawMvS+rVwR/n7Uld4ja6KNYNn0qAxboGV8S53kVFQm+jp3ljM4Nn4nOGYgYdPyOMBaQMKT2RFapGRNdI17JBuvDalURC5l4Sf/nBQmwZdYISj0qiYd8BwXnB8Beq5It86fU+wQQqwMtbEnaT+zqIlj9DiBly8IljXy5ZKUHgo6W99XODf1lDKVd5aVDLGEmM0rpJp3npwR0xjB6HYJADCs2QOig3YVjLOR4N32QJUOfZ0HErUEQS+M+9nxrWNlmKHtRxiNxjqtK8SbPgQuUciMO6/IcL+juM+c++JBtZzv3UBmrVldT/YbMlOw6xdBll0heYYwdhsI+9m+yUcZnKttSKRfEyH2+t/yebc5fdV3rSK0pNCfSEHCzN03OMzY5IZpyefOdlvmXE27jijrg1DiRRqv5Up79rIIvG4Cgnc8gFn3rn9Ofu77WjZIkeaQyAMccmPqu+c3T089mjo5Ka3sGmYO2uTa47cqjX6ozGKiR6PpoCr4XA1wXJy/hWmI11Op2o6UVNVcuekwjgTDdhfXN/Gbpv8x7reYNCkigtUfLNBMrhYUhNsr8xr43s2MK70S8XWcHf7GgfZfGuwvFt9mX7tnvGLt/fi/R9QSwMEFAAACAgAAFgh7FxOwTxuAAAAeQAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw1TPSM9VRUEovSizIKAYKGII4pZkpIHa0kkWKqYllYmqSsXGSRWqahZluoqVJSpqlZbKlRbJlclpyqlIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrpeUGpyYnGJO8hwpdhaAFBLAQItABQAAAgIAABYIexXb0pfPQIAAJYEAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAABYIexcTsE8bgAAAHkAAAAJACQAAAAAAAAAAAAAAIoCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAQwMAAAAA
+    dataString: UEsDBBQAAAgIAABYIex+9f80PQIAAJYEAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFtU01v2zAM/SuBz9vQJmmR7Nik6w79GJICK1rswEi0LVSWMkpOmhb97yMVOXHRnQQ/8pF85PNboWogUBFpAdq0ofg+OPk2+jIolHfRt3QDL5dEngQXFK1dmldMaacMbME+w8riTzRVHRnugzNrmlVKPWO0gZel9WvhjvP3pa7wGl0VawaH0qAxboGV8S53kVFQm+jp3ljM4OlwwnDMwMMn5PGAtAGFJ7IitcjIGukadkg3XpvSKIjcS8JPfzioTYMuMMJRaVTMO2A0Lzi+AvVckW+dvifYIAVYGWviTlJ/Z9GSR2hxAy5eEazrZUslKDyU9Lc+LvBvayjlKm8tKhljiTEaV8k0bz24I6axg1BsEgDhWTIHxQZsKxnn48G7bAGqHHs6DiXqCALfmfcz49pGS7HDWg6xGwx12lcJNnyI3CMRGPffEGF/x3GfufdEA+u537oAzdqyuh9stmSnUdYugyy6QnOMYGy2kXez/RIOM7nWWpFIPqbD7fW/ZHPu8vsqb1pF6UmhvpCDhRk67vGZMcmM05PPnOy3zBiedZxx14ahRAq138qUd21kkXhchQRu+YAz79z+nP3ddrRskSPNIRCGuORH1XfO7h4eezR0ctNb2DTMnbXJNUdu1Rr90RjFRJ+Np4Cr0Wg1wXJy/hWmY11Op2o6UVNVcuekwjgTDdhfXN/Gbpv8x7reYNCkigtUfLNBMrhYUhNsr8xr43s2MK70S8XWcHf7GgfZfGuwvFt9mX7tnvGLt/fi/R9QSwMEFAAACAgAAFgh7FxOwTxuAAAAeQAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw1TPSM9VRUEovSizIKAYKGII4pZkpIHa0kkWKqYllYmqSsXGSRWqahZluoqVJSpqlZbKlRbJlclpyqlIsUH1JZUGqX2JuKkRPQGJJRlpmXkpmXrpeUGpyYnGJO8hwpdhaAFBLAQItABQAAAgIAABYIex+9f80PQIAAJYEAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAABYIexcTsE8bgAAAHkAAAAJACQAAAAAAAAAAAAAAIoCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAQwMAAAAA
     file_cachedStartup: {fileID: 0}
     cacheStartup: 0
   showNavGraphs: 1
@@ -41809,3 +41914,4 @@ SceneRoots:
   - {fileID: 1246323336}
   - {fileID: 972265893}
   - {fileID: 935872913}
+  - {fileID: 604416119}

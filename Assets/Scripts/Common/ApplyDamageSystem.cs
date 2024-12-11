@@ -15,18 +15,15 @@ public partial struct ApplyDamageSystem : ISystem
     {
         NetworkTick currentTick = SystemAPI.GetSingleton<NetworkTime>().ServerTick;
         EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
-        foreach (var (currentHitPoints, damageThisTickBuffer, entity) in SystemAPI
-            .Query<RefRW<CurrentHitPoints>, DynamicBuffer<DamageThisTick>>()
+        foreach (var (currentHitPoints, entity) in SystemAPI
+            .Query<RefRW<CurrentHitPoints>>()
             .WithAll<Simulate>()
             .WithEntityAccess())
         {
-            if(!damageThisTickBuffer.GetDataAtTick(currentTick, out var damageThisTick)) continue;
-            if(damageThisTick.Tick != currentTick) continue;
-            currentHitPoints.ValueRW.Value -= damageThisTick.Value;
-
             if(currentHitPoints.ValueRO.Value <= 0)
             {
                 ecb.AddComponent<DestroyEntityTag>(entity);
+                //put on something else here if
             }
         }
         ecb.Playback(state.EntityManager);

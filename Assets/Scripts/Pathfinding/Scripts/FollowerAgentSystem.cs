@@ -44,7 +44,7 @@ public partial class FollowerAgentSystem : SystemBase
         {
             ecb.AddComponent<QueuedAgentTag>(entity);
             agents.Add(entity);
-            UnityEngine.Debug.LogError($"Adding agent to agents");
+            //UnityEngine.Debug.LogError($"Adding agent to agents");
         }
         ecb.Playback(EntityManager);
         int maxToProcess = 10;
@@ -70,6 +70,11 @@ public partial class FollowerAgentSystem : SystemBase
                 agents.RemoveAt(0);
                 continue;
             }
+            if (EntityManager.HasComponent<DestroyEntityTag>(agent))
+            {
+                agents.RemoveAt(0);
+                continue;
+            }
             LocalTransform agentTransform = EntityManager.GetComponentData<LocalTransform>(agent);
             EntityManager.SetComponentData<DestinationPoint>(agent, new DestinationPoint
             {
@@ -80,7 +85,7 @@ public partial class FollowerAgentSystem : SystemBase
         }
         destinations.Dispose();
         timer = 0f;
-        UnityEngine.Debug.LogError($"Timer={timer} amountToProcess={amountToProcess} agents.Length={agents.Length}");
+        //UnityEngine.Debug.LogError($"Timer={timer} amountToProcess={amountToProcess} agents.Length={agents.Length}");
     }
     public LocalTransform GetClosestDestination(NativeArray<LocalTransform> destinations, float3 agentPos)
     {

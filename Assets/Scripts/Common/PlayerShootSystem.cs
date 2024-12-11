@@ -4,6 +4,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 using Unity.Physics;
+using Unity.Physics.Extensions;
 using Unity.Transforms;
 using UnityEngine.VFX;
 [UpdateInGroup(typeof(PredictedSimulationSystemGroup))]
@@ -98,6 +99,16 @@ public partial class PlayerShootSystem : SystemBase
                                     var hp = SystemAPI.GetComponentRW<CurrentHitPoints>(hit.Entity);
                                     hp.ValueRW.Value--;
                                 }
+                                // if (SystemAPI.HasComponent<PhysicsVelocity>(hit.Entity))
+                                // {
+                                //     var physicsVelocity = SystemAPI.GetComponentRW<PhysicsVelocity>(hit.Entity);
+                                //     var physicsMass = SystemAPI.GetComponent<PhysicsMass>(hit.Entity);
+                                //     float3 vPlanar = math.normalizesafe(shotVector);
+                                //     float3 vNormal = math.up()*5f;
+                                //     physicsVelocity.ValueRW.ApplyLinearImpulse(physicsMass, 1f, vPlanar*5f + vNormal);
+                                //     physicsVelocity.ValueRW.ApplyAngularImpulse(physicsMass, 1f, hit.SurfaceNormal);
+                                //     //physicsVelocity.ValueRW.Linear = math.up();
+                                // }
                             }
                             HitType hitType = HitType.Miss;
                             if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))

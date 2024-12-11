@@ -8,7 +8,7 @@ using Pathfinding.ECS;
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial struct RadialSpawnerSystem : ISystem
 {
-    const int maximumSpawnAmount = 1000;
+    const int maximumSpawnAmount = 200;
     private EntityQuery destinationPointQuery;
     public void OnCreate(ref SystemState state)
     {
