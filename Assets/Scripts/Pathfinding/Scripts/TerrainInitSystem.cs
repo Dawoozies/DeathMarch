@@ -3,7 +3,7 @@
 using Unity.Burst;
 using Unity.Entities;
 using UnityEngine;
-
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 [BurstCompile]
 public partial class TerrainInitSystem : SystemBase
 {

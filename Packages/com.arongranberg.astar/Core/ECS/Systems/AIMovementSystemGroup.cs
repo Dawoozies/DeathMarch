@@ -8,6 +8,7 @@ using Unity.Jobs;
 
 namespace Pathfinding.ECS {
 	[UpdateAfter(typeof(TransformSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 	public partial class AIMovementSystemGroup : ComponentSystemGroup {
 		/// <summary>Rate manager which runs a system group multiple times if the delta time is higher than desired, but always executes the group at least once per frame</summary>
 		public class TimeScaledRateManager : IRateManager, System.IDisposable {

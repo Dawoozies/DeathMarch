@@ -7,6 +7,8 @@ using Pathfinding.RVO;
 using Unity.Transforms;
 struct InitRvoAgentTag : IComponentData { }
 
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 [RequireMatchingQueriesForUpdate]
 public partial class RvoMapInitializationSystem : SystemBase
 {

@@ -16,6 +16,8 @@ namespace Pathfinding.ECS {
 
 	[UpdateBefore(typeof(RepairPathSystem))]
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	[RequireMatchingQueriesForUpdate]
 	[BurstCompile]
 	public partial struct MovementPlaneFromGraphSystem : ISystem {

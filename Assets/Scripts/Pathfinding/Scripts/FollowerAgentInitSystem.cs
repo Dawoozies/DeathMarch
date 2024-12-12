@@ -6,15 +6,17 @@ using Pathfinding.ECS;
 using Pathfinding;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.NetCode;
 
-
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial class FollowerAgentInitSystem : SystemBase
 {
     protected override void OnUpdate()
     {
-        Entities.ForEach((Entity entity, in ManagedStateOptionsData opts) => {
+        EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
+        foreach (var (opts, entity) in SystemAPI.Query<ManagedStateOptionsData>().WithAll<Simulate>().WithEntityAccess())
+        {
             // managed state is a managed component (class, not a struct).
-
             // Create the ManagedState managed component and add it with the entity manager
             ManagedState state = new ManagedState {
                 enableLocalAvoidance = opts.EnableLocalAvoidance,
@@ -32,11 +34,12 @@ public partial class FollowerAgentInitSystem : SystemBase
             for (int i = 0; i < opts.PathRequestOpts.TagPenalties.Length; i++) {
                 state.pathfindingSettings.tagPenalties[i] = opts.PathRequestOpts.TagPenalties[i];
             }
-            EntityManager.AddComponentObject(entity, state);
-
+            ecb.AddComponent(entity, state);
+            
             // Remove the ManagedStateOptionsData component so this system never runs again
             // for the current entity (it's not needed anymore anyway)
-            EntityManager.RemoveComponent<ManagedStateOptionsData>(entity);
-        }).WithStructuralChanges().WithoutBurst().Run();
+            ecb.RemoveComponent<ManagedStateOptionsData>(entity);            
+        }
+        ecb.Playback(EntityManager);
     }
 }

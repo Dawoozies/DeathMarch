@@ -33,6 +33,8 @@ namespace Pathfinding.ECS.RVO {
 	[BurstCompile]
 	[UpdateAfter(typeof(FollowerControlSystem))]
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	public partial struct RVOSystem : ISystem {
 		/// <summary>
 		/// Keeps track of the last simulator that this RVOSystem saw.

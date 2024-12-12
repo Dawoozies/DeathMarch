@@ -23,6 +23,7 @@ namespace Pathfinding.ECS {
 	[UpdateAfter(typeof(FallbackResolveMovementSystem))]
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
 	[RequireMatchingQueriesForUpdate]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 	public partial struct AIMoveSystem : ISystem {
 		EntityQuery entityQueryPrepareMovement;
 		EntityQuery entityQueryWithGravity;

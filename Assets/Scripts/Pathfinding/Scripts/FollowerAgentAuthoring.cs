@@ -7,7 +7,8 @@ using Pathfinding;
 using Unity.Mathematics;
 using Pathfinding.Util;
 using Unity.Collections;
-
+using Random = UnityEngine.Random;
+using Unity.NetCode;
 public enum AgentMovePlaneType { XY, XZ, Rot };
 
 
@@ -45,7 +46,6 @@ public struct ManagedStateOptionsData : IComponentData
 		RvoAgentOpts = Pathfinding.ECS.RVO.RVOAgent.Default // rvo managed state (default RVO settings)
     };
 }
-
 public class FollowerAgentAuthoring : MonoBehaviour
 {
 	// default destination
@@ -92,7 +92,6 @@ public class FollowerAgentBaker : Baker<FollowerAgentAuthoring>
     public override void Bake(FollowerAgentAuthoring authoring)
     {
 		Entity agentEntity = GetEntity(TransformUsageFlags.Dynamic);
-
 		// add various required components
 		AddComponent<MovementState>(agentEntity);
 		AddComponent<MovementControl>(agentEntity); // i think these get set automatically
@@ -150,7 +149,8 @@ public class FollowerAgentBaker : Baker<FollowerAgentAuthoring>
 			if (i >= authoring.TagPenalties.Count) { break; }
 			authoring.ManagedOpts.PathRequestOpts.TagPenalties[i] = authoring.TagPenalties[i];
 		}
-		AddComponent(agentEntity, authoring.ManagedOpts); // this is temporary (the init system will convert it to a managed component)
+		authoring.ManagedOpts.RvoAgentOpts.priority = Random.Range(0f,1f);
+		AddComponent<ManagedStateOptionsData>(agentEntity, authoring.ManagedOpts); // this is temporary (the init system will convert it to a managed component)
 		if (authoring.ManagedOpts.EnableGravity) { AddComponent<GravityState>(agentEntity); }
 
 		// added after 5.0.9

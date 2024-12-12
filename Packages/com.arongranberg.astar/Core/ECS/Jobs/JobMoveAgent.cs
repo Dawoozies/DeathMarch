@@ -56,7 +56,7 @@ namespace Pathfinding.ECS {
 				state.rotationOffset2 += math.clamp(-state.rotationOffset2, -extraRotationSpeed * dt, extraRotationSpeed * dt);
 			}
 
-			//transform.Rotation = movementPlane.value.ToWorldRotation(newInternalRotation + state.rotationOffset + state.rotationOffset2);
+			transform.Rotation = movementPlane.value.ToWorldRotation(newInternalRotation + state.rotationOffset + state.rotationOffset2);
 		}
 
 		public static float3 MoveWithoutGravity (ref LocalTransform transform, in ResolvedMovement resolvedMovement, in AgentMovementPlane movementPlane, float dt) {
@@ -91,7 +91,7 @@ namespace Pathfinding.ECS {
 			//UnityEngine.Debug.LogError($"delta={delta} transform.position={transform.Position}");
 			
 			//physicsVelocity.Linear += delta;
-			//transform.Position += delta;
+			transform.Position += delta;
 			
 			// In 2D games, the agent may move slightly in the Z direction, due to floating point errors.
 			// Some users get confused about this, so if the Z coordinate is very close to zero, just set it to zero.

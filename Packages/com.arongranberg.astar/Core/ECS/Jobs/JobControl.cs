@@ -15,6 +15,7 @@ namespace Pathfinding.ECS {
 	[BurstCompile]
 	[WithNone(typeof(AgentOffMeshLinkTraversal))]
 	[WithAll(typeof(SimulateMovement), typeof(SimulateMovementControl))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 	public partial struct JobControl : IJobEntity, IJobEntityChunkBeginEnd {
 		public float dt;
 		public CommandBuilder draw;
@@ -48,8 +49,8 @@ namespace Pathfinding.ECS {
 			//Debug.LogWarning($"BEFORE CLAMP transform.pos={transform.Position} state.closestOnNavmesh={state.closestOnNavmesh}");
 			//var position = ClampToNavmesh(transform.Position, state.closestOnNavmesh, in shape, in movementPlane);
 			
-			//var position = state.closestOnNavmesh;
-			var position = transform.Position;
+			var position = state.closestOnNavmesh;
+			//var position = transform.Position;
 			
 			//Debug.LogWarning($"AFTER CLAMP transform.pos={position}");
 
@@ -76,7 +77,7 @@ namespace Pathfinding.ECS {
 			var distanceToSteeringTarget = math.max(0, state.remainingDistanceToEndOfPart - stopDistance);
 			var rotation = movementPlane.value.ToPlane(transform.Rotation) - state.rotationOffset - state.rotationOffset2;
 
-			//transform.Position = position;
+			transform.Position = position;
 
 			if (dt > 0.000001f) {
 				if (!math.isfinite(distanceToSteeringTarget)) {

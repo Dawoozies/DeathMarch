@@ -46,7 +46,7 @@ public partial class FollowerAgentSystem : SystemBase
             //UnityEngine.Debug.LogError($"Adding agent to agents");
         }
         ecb.Playback(EntityManager);
-        int maxToProcess = 5;
+        int maxToProcess = 10;
         int amountToProcess = math.min(maxToProcess, agents.Length);
         if (amountToProcess <= 0)
             return;

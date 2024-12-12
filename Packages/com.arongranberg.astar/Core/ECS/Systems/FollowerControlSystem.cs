@@ -18,6 +18,8 @@ namespace Pathfinding.ECS {
 	using System.Diagnostics;
 
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	[BurstCompile]
 	public partial struct FollowerControlSystem : ISystem {
 		EntityQuery entityQueryControlManaged;

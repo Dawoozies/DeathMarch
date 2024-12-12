@@ -20,6 +20,8 @@ namespace Pathfinding.ECS {
 	/// See: <see cref="AstarPath.OnPathsCalculated"/>
 	/// </summary>
 	[BurstCompile]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	public partial struct PollPendingPathsSystem : ISystem {
 		GCHandle onPathsCalculated;
 		static bool anyPendingPaths;

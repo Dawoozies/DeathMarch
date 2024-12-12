@@ -4,6 +4,8 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 
+
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 [BurstCompile]
 public partial struct RvoPathMovementJob : IJobEntity
 {
@@ -80,7 +82,7 @@ public partial struct RvoPathMovementJob : IJobEntity
 
         // Because targetPt has an incorrect height (not sure why), I must sample the appropriate height from the terrain,
         // and set its target point's y value to that instead.
-        targetPt.y = TerrainMap.SampleHeight(targetPt) + 1f;
+        //targetPt.y = TerrainMap.SampleHeight(targetPt) + 1f;
 
         // if the target point and the current position are zero, it means the sim wants the agent to stay put.
         // exit now because there's nothing left to do, and also because the below look-rotation would give a NaN.

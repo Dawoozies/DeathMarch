@@ -14,6 +14,8 @@ namespace Pathfinding.ECS {
 
     [UpdateInGroup(typeof(AIMovementSystemGroup))]
 	[UpdateBefore(typeof(FollowerControlSystem))]
+    [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	[BurstCompile]
 	public partial struct RepairPathSystem : ISystem {
 		EntityQuery entityQueryPrepare;
