@@ -5,9 +5,11 @@ using Unity.Transforms;
 using Unity.Burst;
 using Unity.Jobs;
 using Unity.Collections;
+using Unity.Physics;
 using UnityEngine;
 using UnityEngine.Jobs;
 using GCHandle = System.Runtime.InteropServices.GCHandle;
+using RaycastHit = UnityEngine.RaycastHit;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -39,7 +41,8 @@ namespace Pathfinding.ECS {
 			ResolvedMovementHandleRO = state.GetComponentTypeHandle<ResolvedMovement>(true);
 
 			entityQueryWithGravity = state.GetEntityQuery(
-				ComponentType.ReadWrite<LocalTransform>(),
+				ComponentType.ReadWrite<PhysicsMassOverride>(),
+				ComponentType.ReadWrite<LocalTransform>(),				
 				ComponentType.ReadOnly<AgentCylinderShape>(),
 				ComponentType.ReadWrite<AgentMovementPlane>(),
 				ComponentType.ReadWrite<MovementState>(),
@@ -61,6 +64,7 @@ namespace Pathfinding.ECS {
 			entityQueryPrepareMovement = jobRepairPathScheduler.GetEntityQuery(Allocator.Temp).WithAll<SimulateMovement, SimulateMovementRepair>().Build(ref state);
 
 			entityQueryGizmos = state.GetEntityQuery(
+				ComponentType.ReadWrite<PhysicsMassOverride>(),
 				ComponentType.ReadOnly<LocalTransform>(),
 				ComponentType.ReadOnly<AgentCylinderShape>(),
 				ComponentType.ReadOnly<MovementSettings>(),
@@ -74,7 +78,7 @@ namespace Pathfinding.ECS {
 
 			entityQueryMovementOverride = state.GetEntityQuery(
 				ComponentType.ReadWrite<ManagedMovementOverrideBeforeMovement>(),
-
+				ComponentType.ReadWrite<PhysicsMassOverride>(),
 				ComponentType.ReadWrite<LocalTransform>(),
 				ComponentType.ReadWrite<AgentCylinderShape>(),
 				ComponentType.ReadWrite<AgentMovementPlane>(),

@@ -5,7 +5,6 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Physics;
 using Unity.Transforms;
-
 namespace Pathfinding.ECS {
 	[BurstCompile]
 	[WithAll(typeof(SimulateMovement), typeof(SimulateMovementFinalize))]
@@ -81,8 +80,10 @@ namespace Pathfinding.ECS {
 			}
 		}
 
-		public void Execute (ref LocalTransform transform, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics) {
-			MoveAgent(ref transform,in shape, in movementPlane, ref state, in movementSettings, in resolvedMovement, ref movementStatistics, dt);
+		public void Execute (ref PhysicsMassOverride physicsMassOverride, ref LocalTransform transform, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics) 
+		{
+			if(physicsMassOverride.IsKinematic == 1)
+				MoveAgent(ref transform, in shape, in movementPlane, ref state, in movementSettings, in resolvedMovement, ref movementStatistics, dt);
 		}
 
 		public static void MoveAgent (ref LocalTransform transform,in AgentCylinderShape shape, in AgentMovementPlane movementPlane, ref MovementState state, in MovementSettings movementSettings, in ResolvedMovement resolvedMovement, ref MovementStatistics movementStatistics, float dt) {

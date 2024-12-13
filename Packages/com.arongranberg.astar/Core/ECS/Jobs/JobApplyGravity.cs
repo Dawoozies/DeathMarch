@@ -5,8 +5,10 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using Unity.Physics;
 using Unity.Transforms;
 using UnityEngine;
+using RaycastHit = UnityEngine.RaycastHit;
 
 namespace Pathfinding.ECS {
 	[BurstCompile]
@@ -50,7 +52,11 @@ namespace Pathfinding.ECS {
 			transform.Position = movementPlane.value.ToWorld(localPosition, currentElevation);
 		}
 
-		public void Execute (ref LocalTransform transform, in MovementSettings movementSettings, ref AgentMovementPlane movementPlane, ref GravityState gravityState, in AgentMovementPlaneSource movementPlaneSource, [Unity.Entities.EntityIndexInQuery] int entityIndexInQuery) {
+		public void Execute (ref PhysicsMassOverride physicsMassOverride, ref LocalTransform transform, in MovementSettings movementSettings, ref AgentMovementPlane movementPlane, ref GravityState gravityState, in AgentMovementPlaneSource movementPlaneSource, [Unity.Entities.EntityIndexInQuery] int entityIndexInQuery)
+		{
+			if (physicsMassOverride.IsKinematic == 0)
+				return;
+			
 			var hit = raycastHits[entityIndexInQuery];
 			var hitAnything = math.any((float3)hit.normal != 0f);
 			if (hitAnything && movementPlaneSource.value == MovementPlaneSource.Raycast) {

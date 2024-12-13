@@ -5,30 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe00cfc0-11c2-4e85-bfe7-db9cc4949e19" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/RandomColorAuthoring.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/RandomColorAuthoring.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/RandomColorSystem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/RandomColorSystem.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Authoring.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Authoring/PhysicsMassOverrideAuthoring.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Authoring/PhysicsMassOverrideAuthoring.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystem.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystem.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystemKinematicDynamicSwap.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystemKinematicDynamicSwap.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DeathMarch/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DeathMarch/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Models/MeshDeformationLit.shadergraph" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Models/MeshDeformationLit.shadergraph" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FollowerAgent.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FollowerAgent.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MobaScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MobaScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentAuthoring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentInitSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentInitSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/CombatComponents.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/CombatComponents.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/PlayerShootSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/PlayerShootSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/RadialSpawnerSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/RadialSpawnerSystem.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/PathMovementSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/PathMovementSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/RvoMapInitializationSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/RvoMapInitializationSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/TerrainInitSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/TerrainInitSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/AstarPathfindingProject.asmdef" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/AstarPathfindingProject.asmdef" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobAlignAgentWithMovementDirection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobAlignAgentWithMovementDirection.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobApplyGravity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobApplyGravity.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobControl.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobMoveAgent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobMoveAgent.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/AIMoveSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/AIMoveSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/AIMovementSystemGroup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/AIMovementSystemGroup.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FallbackResolveMovementSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FallbackResolveMovementSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FollowerControlSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FollowerControlSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/MovementPlaneFromGraphSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/MovementPlaneFromGraphSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/PollPendingPathsSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/PollPendingPathsSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RVOSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RVOSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RepairPathSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RepairPathSystem.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +34,27 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/CalculateFrameDamageSystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/DamageOnTriggerSystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Common/DestroyEntitySystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentAuthoring.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerGridSpawnerAuthoring.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerSpawnController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/PathMovementSystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/TerrainInitSystem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.physics@1.3.5/Unity.Physics/ECS/Base/Components/PhysicsComponents.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -129,6 +147,7 @@
       <workItem from="1733973596758" duration="5798000" />
       <workItem from="1733991963280" duration="9119000" />
       <workItem from="1734002977213" duration="258000" />
+      <workItem from="1734050925089" duration="10353000" />
     </task>
     <servers />
   </component>

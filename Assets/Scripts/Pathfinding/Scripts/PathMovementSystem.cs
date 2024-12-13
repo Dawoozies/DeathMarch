@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
+using Unity.Physics;
 
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
@@ -23,10 +24,11 @@ public partial struct RvoPathMovementJob : IJobEntity
     // Loops through all agents and sets their next position (pos.Value),
     // and at the same time it updates the RVO simulation for each agent.
     [BurstCompile]
-    public void Execute(ref LocalTransform lclXform, ref WaypointIndexData waypoint, ref TravelStateData travel, in MoveSpeedData speed, in DynamicBuffer<WaypointData> path, in RvoAgentData rvoAgent)
+    public void Execute(ref PhysicsMassOverride physicsMassOverride, ref LocalTransform lclXform, ref WaypointIndexData waypoint, ref TravelStateData travel, in MoveSpeedData speed, in DynamicBuffer<WaypointData> path, in RvoAgentData rvoAgent)
     {
         if (path.Length <= 0) { return; }
         if (travel.HasReachedEndOfPath) { return; }
+        if (physicsMassOverride.IsKinematic == 0){ return;}
         //if (dest.TargetEntity == Entity.Null) { return; }
 
         int agentIndex = rvoAgent.agentIndex;

@@ -1,12 +1,15 @@
 using Unity.Entities;
+using Unity.Mathematics;
 using Unity.NetCode;
 public struct MaxHitPoints : IComponentData
 {
     public int Value;
+    public float StunThreshold;
 }
 public struct CurrentHitPoints : IComponentData
 {
     [GhostField] public int Value;
+    [GhostField(Quantization = 0)] public float StunTime;
 }
 [GhostComponent(PrefabType = GhostPrefabType.AllPredicted)]
 public struct DamageBufferElement : IBufferElementData

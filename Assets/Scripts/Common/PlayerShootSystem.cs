@@ -97,7 +97,11 @@ public partial class PlayerShootSystem : SystemBase
                                 if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))
                                 {
                                     var hp = SystemAPI.GetComponentRW<CurrentHitPoints>(hit.Entity);
-                                    hp.ValueRW.Value--;
+                                    //hp.ValueRW.Value--;
+                                    if (hp.ValueRO.StunTime <= 0)
+                                    {
+                                        hp.ValueRW.StunTime += 4f;
+                                    }
                                 }
                                 if (SystemAPI.HasComponent<PhysicsVelocity>(hit.Entity))
                                 {

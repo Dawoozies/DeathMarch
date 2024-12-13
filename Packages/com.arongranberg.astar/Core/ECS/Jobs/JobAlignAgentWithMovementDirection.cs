@@ -3,14 +3,17 @@ using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
-
+using Unity.Physics;
 namespace Pathfinding.ECS {
 	[BurstCompile]
 	[WithAll(typeof(SimulateMovement), typeof(SimulateMovementFinalize))]
 	public partial struct JobAlignAgentWithMovementDirection : IJobEntity {
 		public float dt;
 
-		public void Execute (ref LocalTransform transform, in MovementSettings movementSettings, in MovementState movementState, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, in MovementControl movementControl, ref ResolvedMovement resolvedMovement) {
+		public void Execute (ref PhysicsMassOverride physicsMassOverride, ref LocalTransform transform, in MovementSettings movementSettings, in MovementState movementState, in AgentCylinderShape shape, in AgentMovementPlane movementPlane, in MovementControl movementControl, ref ResolvedMovement resolvedMovement)
+		{
+			if (physicsMassOverride.IsKinematic == 0)
+				return;
 			if (math.lengthsq(movementControl.targetPoint - resolvedMovement.targetPoint) > 0.001f && resolvedMovement.speed > movementSettings.follower.speed * 0.1f) {
 				// If the agent is moving, align it with the movement direction
 				var desiredDirection = movementPlane.value.ToPlane(movementControl.targetPoint - transform.Position);
@@ -31,7 +34,7 @@ namespace Pathfinding.ECS {
 					return;
 				}
 			}
-
+			
 			{
 				// Decay the rotation offset
 				// var da = AstarMath.DeltaAngle(movementState.rotationOffset, 0);
