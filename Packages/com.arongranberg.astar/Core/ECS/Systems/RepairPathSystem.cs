@@ -4,6 +4,7 @@ using Unity.Entities;
 using UnityEngine.Profiling;
 using Unity.Transforms;
 using Unity.Burst;
+using Unity.Physics;
 
 namespace Pathfinding.ECS {
 	using Pathfinding;
@@ -132,7 +133,7 @@ namespace Pathfinding.ECS {
 			public NativeBitArray shouldRecalculatePath;
 			int index;
 
-			public void Execute (ManagedState state, ref ECS.AutoRepathPolicy autoRepathPolicy, ref LocalTransform transform, ref DestinationPoint destination, ref AgentMovementPlane movementPlane) {
+			public void Execute (PhysicsMassOverride physicsMassOverride, ManagedState state, ref ECS.AutoRepathPolicy autoRepathPolicy, ref LocalTransform transform, ref DestinationPoint destination, ref AgentMovementPlane movementPlane) {
 				MaybeRecalculatePath(state, ref autoRepathPolicy, ref transform, ref destination, ref movementPlane, time, shouldRecalculatePath.IsSet(index++));
 			}
 

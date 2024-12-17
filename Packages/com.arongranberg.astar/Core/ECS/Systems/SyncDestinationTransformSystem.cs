@@ -8,6 +8,8 @@ namespace Pathfinding.ECS {
 
 	[UpdateBefore(typeof(RepairPathSystem))]
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	[RequireMatchingQueriesForUpdate]
 	public partial struct SyncDestinationTransformSystem : ISystem {
 		public void OnUpdate (ref SystemState systemState) {

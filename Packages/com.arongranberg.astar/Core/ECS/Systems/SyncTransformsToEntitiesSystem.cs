@@ -16,6 +16,8 @@ namespace Pathfinding.ECS {
 	[UpdateBefore(typeof(TransformSystemGroup))]
 	[UpdateBefore(typeof(AIMovementSystemGroup))]
 	[UpdateInGroup(typeof(SimulationSystemGroup))]
+	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 	public partial struct SyncTransformsToEntitiesSystem : ISystem {
 		public static readonly quaternion ZAxisForwardToYAxisForward = quaternion.Euler(math.PI / 2, 0, 0);
 		public static readonly quaternion YAxisForwardToZAxisForward = quaternion.Euler(-math.PI / 2, 0, 0);

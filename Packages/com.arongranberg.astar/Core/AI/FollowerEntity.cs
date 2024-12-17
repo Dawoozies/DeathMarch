@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine.Profiling;
 using Unity.Entities;
+using Unity.Physics;
 using Unity.Transforms;
 using Unity.Profiling;
 
@@ -262,6 +263,9 @@ namespace Pathfinding {
 		static EntityAccess<ECS.AutoRepathPolicy> autoRepathPolicyRW = new EntityAccess<ECS.AutoRepathPolicy>(false);
 		static EntityAccess<LocalTransform> localTransformAccessRO = new EntityAccess<LocalTransform>(true);
 		static EntityAccess<LocalTransform> localTransformAccessRW = new EntityAccess<LocalTransform>(false);
+		
+		static EntityAccess<PhysicsMassOverride> physicsMassOverrideAccessRO = new EntityAccess<PhysicsMassOverride>(true);
+		
 		static EntityAccess<AgentCylinderShape> agentCylinderShapeAccessRO = new EntityAccess<AgentCylinderShape>(true);
 		static EntityAccess<AgentCylinderShape> agentCylinderShapeAccessRW = new EntityAccess<AgentCylinderShape>(false);
 		static EntityAccess<MovementSettings> movementSettingsAccessRO = new EntityAccess<MovementSettings>(true);
@@ -307,6 +311,7 @@ namespace Pathfinding {
 				if (world == null) throw new Exception("World.DefaultGameObjectInjectionWorld is null. Has the world been destroyed?");
 				achetypeWorld = world;
 				archetype = world.EntityManager.CreateArchetype(
+					typeof(PhysicsMassOverride),
 					typeof(LocalTransform),
 					typeof(MovementState),
 					typeof(MovementSettings),
@@ -546,9 +551,13 @@ namespace Pathfinding {
 					movementPlaneAccessRO.Update(entityManager);
 					localTransformAccessRW.Update(entityManager);
 					readyToTraverseOffMeshLinkRW.Update(entityManager);
+					physicsMassOverrideAccessRO.Update(entityManager);
 
 					ref var localTransform = ref localTransformAccessRW[storage];
 					localTransform.Position = value;
+
+					ref var physicsMassOverride = ref physicsMassOverrideAccessRO[storage];
+					
 					ref var movementState = ref movementStateAccessRW[storage];
 					movementState.positionOffset = float3.zero;
 					if (managedState.pathTracer.hasPath) {
@@ -565,6 +574,7 @@ namespace Pathfinding {
 							var readyToTraverseOffMeshLink = storage.Chunk.GetEnabledMask(ref readyToTraverseOffMeshLinkRW.handle).GetEnabledRefRW<ReadyToTraverseOffMeshLink>(storage.IndexInChunk);
 							if (!nextCornersScratch.IsCreated) nextCornersScratch = new NativeList<float3>(4, Allocator.Persistent);
 							JobRepairPath.Execute(
+								ref physicsMassOverride,
 								ref localTransform,
 								ref movementState,
 								ref shape,
@@ -1147,6 +1157,7 @@ namespace Pathfinding {
 			destinationPointAccessRW.Update(entityManager);
 			movementPlaneAccessRO.Update(entityManager);
 			readyToTraverseOffMeshLinkRW.Update(entityManager);
+			physicsMassOverrideAccessRO.Update(entityManager);
 
 			var storage = entityManager.GetStorageInfo(entity);
 			destinationPointAccessRW[storage] = new DestinationPoint {
@@ -1167,10 +1178,12 @@ namespace Pathfinding {
 					ref var shape = ref agentCylinderShapeAccessRO[storage];
 					ref var movementSettings = ref movementSettingsAccessRO[storage];
 					ref var localTransform = ref localTransformAccessRO[storage];
+					ref var physicsMassOverride = ref physicsMassOverrideAccessRO[storage];
 					ref var destinationPoint = ref destinationPointAccessRW[storage];
 					var readyToTraverseOffMeshLink = storage.Chunk.GetEnabledMask(ref readyToTraverseOffMeshLinkRW.handle).GetEnabledRefRW<ReadyToTraverseOffMeshLink>(storage.IndexInChunk);
 					if (!nextCornersScratch.IsCreated) nextCornersScratch = new NativeList<float3>(4, Allocator.Persistent);
 					JobRepairPath.Execute(
+						ref physicsMassOverride,
 						ref localTransform,
 						ref movementState,
 						ref shape,
@@ -1669,7 +1682,7 @@ namespace Pathfinding {
 
 		void ClearPath() => ClearPath(entity);
 
-		static void ClearPath (Entity entity) {
+		public static void ClearPath (Entity entity) {
 			if (entityStorageCache.Update(World.DefaultGameObjectInjectionWorld, entity, out var entityManager, out var storage)) {
 				agentOffMeshLinkTraversalRO.Update(entityManager);
 
@@ -1801,6 +1814,7 @@ namespace Pathfinding {
 			ref var movementPlane = ref movementPlaneAccessRO[storage];
 			ref var movementState = ref movementStateAccessRW[storage];
 			ref var localTransform = ref localTransformAccessRO[storage];
+			ref var physicsMassOverride = ref physicsMassOverrideAccessRO[storage];
 			ref var destination = ref destinationPointAccessRW[storage];
 			ref var autoRepathPolicy = ref autoRepathPolicyRW[storage];
 
@@ -1838,6 +1852,7 @@ namespace Pathfinding {
 					ref var movementSettings = ref movementSettingsAccessRO[storage];
 					var readyToTraverseOffMeshLink = storage.Chunk.GetEnabledMask(ref readyToTraverseOffMeshLinkRW.handle).GetEnabledRefRW<ReadyToTraverseOffMeshLink>(storage.IndexInChunk);
 					JobRepairPath.Execute(
+						ref physicsMassOverride,
 						ref localTransform,
 						ref movementState,
 						ref shape,

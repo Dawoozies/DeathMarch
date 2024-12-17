@@ -9,6 +9,8 @@ using Pathfinding.Util;
 using Unity.Collections;
 using Random = UnityEngine.Random;
 using Unity.NetCode;
+using Unity.Transforms;
+
 public enum AgentMovePlaneType { XY, XZ, Rot };
 
 

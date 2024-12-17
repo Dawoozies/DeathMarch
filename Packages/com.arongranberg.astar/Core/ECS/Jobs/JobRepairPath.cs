@@ -5,6 +5,7 @@ using Unity.Profiling;
 using Unity.Transforms;
 using Unity.Collections;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.Physics;
 using GCHandle = System.Runtime.InteropServices.GCHandle;
 
 namespace Pathfinding.ECS {
@@ -22,7 +23,10 @@ namespace Pathfinding.ECS {
 	/// and if it has reached the destination or not.
 	/// </summary>
 	public struct JobRepairPath : IJobChunk {
-		public struct Scheduler {
+		public struct Scheduler
+		{
+			[ReadOnly] 
+			public ComponentTypeHandle<PhysicsMassOverride> PhysicsMassOverrideTypeHandleRO;
 			[ReadOnly]
 			public ComponentTypeHandle<LocalTransform> LocalTransformTypeHandleRO;
 			public ComponentTypeHandle<MovementState> MovementStateTypeHandleRW;
@@ -57,6 +61,7 @@ namespace Pathfinding.ECS {
 
 			public Scheduler(ref SystemState systemState) {
 				entityManagerHandle = GCHandle.Alloc(systemState.EntityManager);
+				PhysicsMassOverrideTypeHandleRO = systemState.GetComponentTypeHandle<PhysicsMassOverride>(true);
 				LocalTransformTypeHandleRO = systemState.GetComponentTypeHandle<LocalTransform>(true);
 				MovementStateTypeHandleRW = systemState.GetComponentTypeHandle<MovementState>(false);
 				AgentCylinderShapeTypeHandleRO = systemState.GetComponentTypeHandle<AgentCylinderShape>(true);
@@ -74,6 +79,7 @@ namespace Pathfinding.ECS {
 			}
 
 			void Update (ref SystemState systemState) {
+				PhysicsMassOverrideTypeHandleRO.Update(ref systemState);
 				LocalTransformTypeHandleRO.Update(ref systemState);
 				MovementStateTypeHandleRW.Update(ref systemState);
 				AgentCylinderShapeTypeHandleRO.Update(ref systemState);
@@ -108,7 +114,9 @@ namespace Pathfinding.ECS {
 				indicesScratch = new NativeArray<int>(8, Allocator.Temp);
 			}
 
-			unsafe {
+			unsafe
+			{
+				var physicsMassOverrides = (PhysicsMassOverride*)chunk.GetNativeArray(ref scheduler.PhysicsMassOverrideTypeHandleRO).GetUnsafeReadOnlyPtr();
 				var localTransforms = (LocalTransform*)chunk.GetNativeArray(ref scheduler.LocalTransformTypeHandleRO).GetUnsafeReadOnlyPtr();
 				var movementStates = (MovementState*)chunk.GetNativeArray(ref scheduler.MovementStateTypeHandleRW).GetUnsafePtr();
 				var agentCylinderShapes = (AgentCylinderShape*)chunk.GetNativeArray(ref scheduler.AgentCylinderShapeTypeHandleRO).GetUnsafeReadOnlyPtr();
@@ -121,6 +129,7 @@ namespace Pathfinding.ECS {
 
 				for (int i = 0; i < chunk.Count; i++) {
 					Execute(
+						ref physicsMassOverrides[i],
 						ref localTransforms[i],
 						ref movementStates[i],
 						ref agentCylinderShapes[i],
@@ -142,7 +151,7 @@ namespace Pathfinding.ECS {
 		private static readonly ProfilerMarker MarkerGetNextCorners = new ProfilerMarker("GetNextCorners");
 		private static readonly ProfilerMarker MarkerUpdateReachedEndInfo = new ProfilerMarker("UpdateReachedEndInfo");
 
-		public static void Execute (ref LocalTransform transform, ref MovementState state, ref AgentCylinderShape shape, ref AgentMovementPlane movementPlane, ref DestinationPoint destination, EnabledRefRW<ReadyToTraverseOffMeshLink> readyToTraverseOffMeshLink, ManagedState managedState, in MovementSettings settings, NativeList<float3> nextCornersScratch, ref NativeArray<int> indicesScratch, Allocator allocator, bool onlyApplyPendingPaths) {
+		public static void Execute (ref PhysicsMassOverride physicsMassOverride, ref LocalTransform transform, ref MovementState state, ref AgentCylinderShape shape, ref AgentMovementPlane movementPlane, ref DestinationPoint destination, EnabledRefRW<ReadyToTraverseOffMeshLink> readyToTraverseOffMeshLink, ManagedState managedState, in MovementSettings settings, NativeList<float3> nextCornersScratch, ref NativeArray<int> indicesScratch, Allocator allocator, bool onlyApplyPendingPaths) {
 			// Only enabled by the PollPendingPathsSystem
 			if (onlyApplyPendingPaths) {
 				if (managedState.pendingPath != null && managedState.pendingPath.IsDone()) {
@@ -158,7 +167,8 @@ namespace Pathfinding.ECS {
 
 			ref var pathTracer = ref managedState.pathTracer;
 
-			if (pathTracer.hasPath) {
+			if (pathTracer.hasPath) 
+			{
 				MarkerRepair.Begin();
 				// Update the start and end points of the path based on the current position and destination.
 				// This will repair the path if necessary, ensuring that the agent has a valid, if not necessarily optimal, path.
@@ -167,7 +177,8 @@ namespace Pathfinding.ECS {
 				state.endOfPath = pathTracer.UpdateEnd(destination.destination, PathTracer.RepairQuality.High, movementPlane.value, managedState.pathfindingSettings.traversalProvider, managedState.activePath);
 				MarkerRepair.End();
 
-				if (state.pathTracerVersion != pathTracer.version) {
+				if (state.pathTracerVersion != pathTracer.version) 
+				{
 					nextCornersScratch.Clear();
 
 					MarkerGetNextCorners.Begin();
@@ -192,22 +203,30 @@ namespace Pathfinding.ECS {
 					var nextCorners = nextCornersScratch.AsUnsafeSpan();
 					JobRepairPathHelpers.UpdateReachedEndInfo(ref nextCorners, ref state, ref movementPlane, ref transform, ref shape, ref destination, settings.stopDistance, ref pathTracerInfo);
 					state.pathTracerVersion = pathTracer.version;
-				} else {
+				} 
+				else 
+				{
 					JobRepairPathHelpers.UpdateReachedOrientation(ref state, ref transform, ref movementPlane, ref destination);
 				}
 
 				if (pathTracer.startNode != null && !pathTracer.startNode.Destroyed && pathTracer.startNode.Walkable) {
 					state.graphIndex = pathTracer.startNode.GraphIndex;
 					state.hierarchicalNodeIndex = pathTracer.startNode.HierarchicalNodeIndex;
-				} else {
+				} 
+				else 
+				{
 					state.graphIndex = GraphNode.InvalidGraphIndex;
 					state.hierarchicalNodeIndex = -1;
 				}
-			} else {
+			} 
+			
+			if(!pathTracer.hasPath) 
+			{
 				state.SetPathIsEmpty(transform.Position);
 			}
 
-			if (readyToTraverseOffMeshLink.IsValid) readyToTraverseOffMeshLink.ValueRW = state.reachedEndOfPart && managedState.pathTracer.isNextPartValidLink;
+			if (readyToTraverseOffMeshLink.IsValid) 
+				readyToTraverseOffMeshLink.ValueRW = state.reachedEndOfPart && managedState.pathTracer.isNextPartValidLink;
 		}
 	}
 

@@ -14,7 +14,6 @@ namespace Pathfinding.ECS {
 	[UpdateAfter(typeof(RVOSystem))] // Has to execute after RVOSystem in case that system detects that some agents should not be simulated using the RVO system anymore.
 	[UpdateInGroup(typeof(AIMovementSystemGroup))]
 	[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
-
 	[RequireMatchingQueriesForUpdate]
 	public partial struct FallbackResolveMovementSystem : ISystem {
 		public void OnUpdate (ref SystemState systemState) {

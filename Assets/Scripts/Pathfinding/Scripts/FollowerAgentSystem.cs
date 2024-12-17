@@ -4,6 +4,8 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
+using Unity.Physics;
+
 //queue distance calculations
 public struct QueuedAgentTag : IComponentData { }
 [BurstCompile]

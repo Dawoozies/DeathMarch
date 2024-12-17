@@ -33,7 +33,8 @@ namespace Pathfinding.ECS {
 			// Don't clamp the elevation except to make sure it's not too far below the navmesh.
 			var clamped2D = movementPlane.value.ToPlane(closestOnNavmesh, out float clampedElevation);
 			movementPlane.value.ToPlane(position, out float currentElevation);
-			currentElevation = math.max(currentElevation, clampedElevation - shape.height * 0.4f);
+			//currentElevation = math.max(currentElevation, clampedElevation - shape.height * 0.4f);
+			currentElevation = position.y;
 			position = movementPlane.value.ToWorld(clamped2D, currentElevation);
 			return position;
 		}
@@ -49,10 +50,12 @@ namespace Pathfinding.ECS {
 			// Clamp the agent to the navmesh.
 			//Debug.LogWarning($"BEFORE CLAMP transform.pos={transform.Position} state.closestOnNavmesh={state.closestOnNavmesh}");
 			//var position = ClampToNavmesh(transform.Position, state.closestOnNavmesh, in shape, in movementPlane);
-			if (physicsMassOverride.IsKinematic == 0)
-				return;
-			
 			var position = state.closestOnNavmesh;
+			if (math.distancesq(state.closestOnNavmesh, transform.Position) > 25)
+			{
+				//Debug.LogError("WHAT THE FUCK");
+				position = transform.Position;
+			}
 			//var position = transform.Position;
 			
 			//Debug.LogWarning($"AFTER CLAMP transform.pos={position}");

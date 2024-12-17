@@ -7,6 +7,7 @@ using Pathfinding;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.NetCode;
+using Unity.Transforms;
 
 [WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
 public partial class FollowerAgentInitSystem : SystemBase
@@ -14,7 +15,7 @@ public partial class FollowerAgentInitSystem : SystemBase
     protected override void OnUpdate()
     {
         EntityCommandBuffer ecb = new EntityCommandBuffer(Allocator.Temp);
-        foreach (var (opts, entity) in SystemAPI.Query<ManagedStateOptionsData>().WithAll<Simulate>().WithEntityAccess())
+        foreach (var (opts, localTransform, destinationPoint, entity) in SystemAPI.Query<ManagedStateOptionsData, LocalTransform, DestinationPoint>().WithAll<Simulate>().WithEntityAccess())
         {
             // managed state is a managed component (class, not a struct).
             // Create the ManagedState managed component and add it with the entity manager

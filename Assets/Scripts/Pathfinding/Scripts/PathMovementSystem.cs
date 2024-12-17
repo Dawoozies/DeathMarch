@@ -28,7 +28,8 @@ public partial struct RvoPathMovementJob : IJobEntity
     {
         if (path.Length <= 0) { return; }
         if (travel.HasReachedEndOfPath) { return; }
-        if (physicsMassOverride.IsKinematic == 0){ return;}
+
+
         //if (dest.TargetEntity == Entity.Null) { return; }
 
         int agentIndex = rvoAgent.agentIndex;
@@ -113,6 +114,8 @@ public partial struct RvoPathMovementJob : IJobEntity
 
 // systembase must be used instead of isystem because m_simBurst is a managed object
 [RequireMatchingQueriesForUpdate]
+[WorldSystemFilter(WorldSystemFilterFlags.ServerSimulation)]
+
 public partial class RvoPathMovementSystem : SystemBase
 {
     Pathfinding.RVO.SimulatorBurst m_simBurst;
