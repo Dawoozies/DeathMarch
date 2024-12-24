@@ -23357,7 +23357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0fc5ed21362e8c4a8a476b4118e7bb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5529579363316494291, guid: e06c39a02d3786343bb9c698370941a7, type: 3}
+  prefab: {fileID: 5529579363316494291, guid: 0c39df3715c357643b42925e62b3c6bb, type: 3}
   maxCount: 0
   spawnTime: 0.1
   batchSize: 5

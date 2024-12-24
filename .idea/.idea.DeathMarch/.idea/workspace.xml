@@ -5,26 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fe00cfc0-11c2-4e85-bfe7-db9cc4949e19" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunPathSystem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunPathSystem.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunRecoverySystem.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunRecoverySystem.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.DeathMarch/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.DeathMarch/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Effects/BulletLineVFX.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Effects/BulletLineVFX.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/FollowerAgent.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/FollowerAgent.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MobaScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MobaScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MobaScene/MobaEntities.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MobaScene/MobaEntities.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystemKinematicDynamicSwap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/Systems/StunSystemKinematicDynamicSwap.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentAuthoring.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentAuthoring.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentInitSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentInitSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/FollowerAgentSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/PathMovementSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Pathfinding/Scripts/PathMovementSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/AI/FollowerEntity.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/AI/FollowerEntity.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobAlignAgentWithMovementDirection.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobAlignAgentWithMovementDirection.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobControl.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobControl.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobRepairPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Jobs/JobRepairPath.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FallbackResolveMovementSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/FallbackResolveMovementSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RepairPathSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/RepairPathSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/SyncDestinationTransformSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/SyncDestinationTransformSystem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/SyncTransformsToEntitiesSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/com.arongranberg.astar/Core/ECS/Systems/SyncTransformsToEntitiesSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Common/PlayerShootSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Common/PlayerShootSystem.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +131,9 @@
       <workItem from="1734050925089" duration="11001000" />
       <workItem from="1734167216021" duration="4157000" />
       <workItem from="1734397279143" duration="12004000" />
-      <workItem from="1734414233764" duration="8389000" />
+      <workItem from="1734414233764" duration="9086000" />
+      <workItem from="1734461627488" duration="616000" />
+      <workItem from="1735007657516" duration="4310000" />
     </task>
     <servers />
   </component>

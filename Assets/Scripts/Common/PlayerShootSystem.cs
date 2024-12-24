@@ -97,7 +97,14 @@ public partial class PlayerShootSystem : SystemBase
                                 if (SystemAPI.HasComponent<CurrentHitPoints>(hit.Entity))
                                 {
                                     var hp = SystemAPI.GetComponentRW<CurrentHitPoints>(hit.Entity);
-                                    //hp.ValueRW.Value--;
+                                    if (hp.ValueRO.Value - 1 <= 0)
+                                    {
+                                        VisualEffect vfx = EffectsManager.ins.GetEffect(2);
+                                        VFXEventAttribute shootDirectionAttribute = vfx.CreateVFXEventAttribute();
+                                        shootDirectionAttribute.SetVector3("StartPosition", hit.Position);
+                                        vfx.SendEvent("OnPlay", shootDirectionAttribute);
+                                    }
+                                    hp.ValueRW.Value--;
                                     if (hp.ValueRO.StunTime <= 0)
                                     {
                                         hp.ValueRW.StunTime += 4f;

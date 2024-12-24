@@ -1913,12 +1913,12 @@ MonoBehaviour:
     z: 0
   AgentHeight: 1
   AgentRadius: 1
-  RotationSpeed: 100
+  RotationSpeed: 300
   MoveSpeed: 10
-  MaxRotationSpeed: 100
+  MaxRotationSpeed: 300
   MaxOnSpotRotationSpeed: 720
-  SlowdownTime: 1
-  DesiredWallDistance: 0
+  SlowdownTime: 0
+  DesiredWallDistance: 0.2
   AllowRotatingOnSpot: 0
   LeadInRadiusWhenApproachingDestination: 1
   MovePlaneSource: 0
@@ -1967,12 +1967,12 @@ MonoBehaviour:
       TraversableTags: -1
     EnableGravity: 0
     RvoAgentOpts:
-      agentTimeHorizon: 1
-      obstacleTimeHorizon: 2
+      agentTimeHorizon: 0.1
+      obstacleTimeHorizon: 0.1
       maxNeighbours: 5
       layer: 1
       collidesWith: -1
-      priority: 0.85354555
+      priority: 0.78396904
       debug: 0
       locked: 0
   TagPenalties: 
